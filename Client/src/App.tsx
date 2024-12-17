@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div>
-      <Button>Click me</Button>
+      <Button variant="outline">Click me</Button>
     </div>
   )
 }
