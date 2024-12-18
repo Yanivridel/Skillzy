@@ -4,6 +4,7 @@ import { AppSidebar } from "./components/SideBar/SideBar";
 import Teachers from "./Pages/Teachers";
 import LogIn from "./components/Log/logIn";
 import SignUp from "./components/Log/Signup";
+import Home from "./Pages/Home";
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
           <AppSidebar />
           <SidebarTrigger />
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
         <Route path="/teachers" element={<Teachers />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />

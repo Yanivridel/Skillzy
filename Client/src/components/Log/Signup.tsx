@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { IFormData } from "@/types/userTypes";
-import { log } from "console";
+import { IFormDataSingUp } from "@/types/userTypes";
 import { createUser } from "@/utils/userApi";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<IFormData>({
+  const [msgText, setMsgText] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState<IFormDataSingUp>({
     fName: "",
     lName: "",
     phone: "",
     email: "",
     password: "",
-    role: "",
+    role: "student",
   });
 
   const navigate = useNavigate();
@@ -35,7 +37,18 @@ const SignUp = () => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createUser(formData)
+    if (confirmPassword !== formData.password){
+        setMsgText("The passwords you entered do not match. Please try again.")
+        return;
+      }
+    const data = await createUser(formData)
+    console.log(data);
+     
+
+    if (data.status === 409) {
+        setMsgText("email or phone already exists")
+        return;
+    }
     setLoading(false);
     setFormData({
       fName: "",
@@ -45,12 +58,14 @@ const SignUp = () => {
       password: "",
       role: "",
     });
+    navigate("/")
     // console.log(formData);
   };
 
   return (
     <div className="max-w-md mx-auto p-4">
       <h2 className="text-xl font-bold text-center">Sign Up</h2>
+      <div>{msgText}</div>
       <form onSubmit={(e) => handleFormSubmit(e)} className="space-y-4">
         <div>
           <label htmlFor="fName" className="block">
@@ -77,7 +92,7 @@ const SignUp = () => {
             type="text"
             value={formData.lName}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded text-black"
+            className="w-full px-4 py-2 border rounded"
             required
           />
         </div>
@@ -89,6 +104,7 @@ const SignUp = () => {
             id="phone"
             name="phone"
             type="number"
+            maxLength={10} 
             value={formData.phone}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded"
@@ -130,7 +146,31 @@ const SignUp = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-3"
             >
-              {showPassword ? <FiEyeOff /> : <FiEye />}
+              {!showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="confirmPassword" className="block">
+          Confirm Password
+          </label>
+          <div className="relative">
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e)=>setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-2 border rounded"
+              required
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-3"
+            >
+              {!showConfirmPassword ? <FiEyeOff /> : <FiEye />}
             </button>
           </div>
         </div>
