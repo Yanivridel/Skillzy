@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "./mode-toggle"
 // Icons
-import { Home, ShieldHalf, Search, Contact, User2, ChevronUp, LogIn, UserPlus } from "lucide-react"
+import { Home, ShieldHalf, Search, Contact, User2, ChevronUp, LogIn, UserPlus ,BookOpenIcon} from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenu } from "@radix-ui/react-dropdown-menu"
 
@@ -32,6 +32,11 @@ const navList = [
     title: "Contact",
     url: "/contact",
     icon: Contact,
+    },
+    {
+    title: "Lessons",
+    url: "/lessons",
+    icon: BookOpenIcon,
     },
 ]
 const navUser = [
@@ -60,17 +65,15 @@ export function AppSidebar() {
     return (
     <Sidebar 
     >
-
-
         <SidebarHeader>
-    
-            <h1 className="bubble-font text-center  text-black">SKILLZY</h1>
+
+            <h1 className="bubble-font text-center  text-[var(--button-bg)] ">SKILLZY</h1>
         </SidebarHeader>
 
         {/* Content */}
         <SidebarContent>
             <SidebarGroup>
-                <SidebarGroupLabel>SKILLZY</SidebarGroupLabel>
+                {/* <SidebarGroupLabel>SKILLZY</SidebarGroupLabel> */}
                 <SidebarGroupContent>
                 <SidebarMenu>
                     {navList.map((link) => (

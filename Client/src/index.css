@@ -32,7 +32,7 @@
 
 @layer base {
   :root {
-    --background: #ededed;
+    --background: #d7cbbe;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -70,7 +70,9 @@
     --dropdown-bg: hsl(214, 6%, 76%);
     --dropdown-bg-hover: hsl(214, 15%, 91%);
     --container-bg: #ff8d3c;
-    --button-bg: #58c2fb;
+    --button-bg: #43ade7;
+    --input-text: #090909;
+    --bg-header: white;
   }
 
   .dark {
@@ -112,6 +114,8 @@
     --dropdown-bg-hover: #334155;
     --container-bg: #345c3c;
     --button-bg: #fec062;
+    --input-text: #090909;
+    --bg-header: "black";
   }
 }
 

@@ -13,6 +13,8 @@ import { setUser } from "./store/slices/userSlices";
 import { useEffect } from "react";
 import About from "./Pages/About";
 import Lessons from "./Pages/Lessons";
+import logoLight from "./assets/logo/light.png"
+import logoDark from "./assets/logo/dark.png"
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +36,8 @@ function App() {
     <Router>
           <AppSidebar />
           <SidebarTrigger />
+       
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/lessons" element={<Lessons />} />

@@ -105,7 +105,8 @@ const SignUp = () => {
                 type="text"
                 value={formData.fName}
                 onChange={handleChange}
-                className=" w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
               />
             </div>
@@ -119,7 +120,8 @@ const SignUp = () => {
                 type="text"
                 value={formData.lName}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
               />
             </div>
@@ -142,7 +144,7 @@ const SignUp = () => {
                     handleChange(e);
                   }
                 }}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
                 required
               />
             </div>
@@ -157,7 +159,8 @@ const SignUp = () => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
               />
             </div>
@@ -174,7 +177,8 @@ const SignUp = () => {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
                 autoComplete="new-password"
               />
@@ -199,7 +203,8 @@ const SignUp = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded"
+                className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
                 autoComplete="new-password"
               />

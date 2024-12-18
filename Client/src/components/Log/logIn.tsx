@@ -26,12 +26,11 @@ const LogIn = () => {
     });
   };
 
-  // Add shake effect on error
   const addShakeError = (ref: React.RefObject<HTMLInputElement>, message: string) => {
     setMsgText(message);
     if (ref.current) {
       ref.current.classList.add("shake");
-      setTimeout(() => ref.current?.classList.remove("shake"), 500); // Remove shake after 500ms
+      setTimeout(() => ref.current?.classList.remove("shake"), 500); 
     }
   };
 
@@ -40,7 +39,7 @@ const LogIn = () => {
 
     setLoading(true);
 
-    // Validate email and password
+
     if (!formData.email || !formData.password) {
       if (!formData.email) {
         addShakeError(emailRef, "Email is required.");
@@ -69,13 +68,13 @@ const LogIn = () => {
   };
 
   return (
-    <div className="thin-font flex justify-center w-full flex-col h-[100%] m-auto">
+    <div className="thin-font flex justify-center w-full flex-col h-[100%] m-auto ">
       <div className="bg-[var(--container-bg)] md:max-w-[450px] mx-auto p-4 m-4 h-[100%] rounded-lg w-[60%] ">
         <h2 className="bubble-font text-center pb-3">Log In</h2>
         <div className="text-red-500 text-center">{msgText}</div>
         <form onSubmit={handleFormSubmit} className="space-y-2 ">
           <div>
-            <label htmlFor="email" className="block">
+            <label htmlFor="email" className="block ">
               Email
             </label>
             <input
@@ -85,7 +84,8 @@ const LogIn = () => {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
+              className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
               required
             />
           </div>
@@ -93,7 +93,7 @@ const LogIn = () => {
             <label htmlFor="password" className="block">
               Password
             </label>
-            <div className="relative">
+            <div className="relative mb-2">
               <input
                 ref={passwordRef}
                 id="password"
@@ -101,14 +101,15 @@ const LogIn = () => {
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded"
+                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
+
                 required
                 autoComplete="new-password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3"
+                className="absolute right-3 top-3 "
               >
                 {!showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
