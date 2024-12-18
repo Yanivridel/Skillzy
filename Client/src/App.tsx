@@ -13,6 +13,7 @@ import { setUser } from "./store/slices/userSlices";
 import { useEffect } from "react";
 import About from "./Pages/About";
 import Lessons from "./Pages/Lessons";
+import Profile from "./Pages/Profile";
 import logoLight from "./assets/logo/light.png"
 import logoDark from "./assets/logo/dark.png"
 
@@ -36,10 +37,14 @@ function App() {
     <Router>
           <AppSidebar />
           <SidebarTrigger />
-       
+       {/* <div className="block"
+       ><img src={logoLight} className="w-[70px] h-[70px] object-cover" alt="" /></div> */}
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/about" element={<About />} /> */}
+        {/* <Route path="/contact" element={<Contact />} /> */}
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/teacherProfile/:id" element={<TeacherProfilePage />} />
         <Route path="/filter" element={<Filter />} />

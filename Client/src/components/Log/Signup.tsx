@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { IFormDataSingUp } from "@/types/userTypes";
-import { createUser } from "@/utils/userApi"
+import { createUser } from "@/utils/userApi";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +54,9 @@ const SignUp = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Clear previous error messages
+    setMsgText("");
+
     // Validate passwords match
     if (confirmPassword !== formData.password) {
       addShakeError(confirmPasswordRef, "The passwords you entered do not match. Please try again.");
@@ -84,18 +87,18 @@ const SignUp = () => {
       phone: "",
       email: "",
       password: "",
-      role: "",
+      role: "student",
     });
     navigate("/");
   };
 
   return (
-    <div className="thin-font flex justify-center  flex-col h-[100%] m-auto w-[80%]">
-      <div className="bg-[var(--container-bg)] max-w-md mx-auto p-4 m-4 h-[100%] rounded-lg ">
+    <div className="thin-font flex justify-center flex-col h-[100%] m-auto w-[80%]">
+      <div className="bg-[var(--container-bg)] max-w-md mx-auto p-4 m-4 h-[100%] rounded-lg">
         <h2 className="bubble-font text-center pb-3">Sign Up</h2>
-        <form onSubmit={handleFormSubmit} className="space-y-2 ">
-          <div className="md:flex gap-4" >
-            <div >
+        <form onSubmit={handleFormSubmit} className="space-y-2">
+          <div className="md:flex gap-4">
+            <div>
               <label htmlFor="fName" className="block">
                 First Name
               </label>
@@ -106,7 +109,6 @@ const SignUp = () => {
                 value={formData.fName}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
-
                 required
               />
             </div>
@@ -121,12 +123,11 @@ const SignUp = () => {
                 value={formData.lName}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
-
                 required
               />
             </div>
           </div>
-          <div className="md:flex gap-4"> 
+          <div className="md:flex gap-4">
             <div>
               <label htmlFor="phone" className="block">
                 Phone Number
@@ -160,7 +161,6 @@ const SignUp = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
-
                 required
               />
             </div>
@@ -178,7 +178,6 @@ const SignUp = () => {
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
-
                 required
                 autoComplete="new-password"
               />
@@ -204,14 +203,13 @@ const SignUp = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
-
                 required
                 autoComplete="new-password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className=" absolute right-3 top-3"
+                className="absolute right-3 top-3"
               >
                 {!showConfirmPassword ? <FiEyeOff /> : <FiEye />}
               </button>
@@ -245,21 +243,21 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={loading}
-            className={` bg-[var(--button-bg)] w-full button-custom text-white py-2 rounded ${
+            className={`bg-[var(--button-bg)] w-full button-custom text-white py-2 rounded ${
               loading ? "bg-gray-500" : ""
             }`}
           >
             {loading ? "Loading..." : "Sign Up"}
           </button>
         </form>
-        </div>
-        <div className="text-center">
-          <p>
-            Already have an account?{" "}
-            <Link to="/login" className="text-[var(--button-bg)]">
-              Login
-            </Link>
-          </p>
+      </div>
+      <div className="text-center">
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" className="text-[var(--button-bg)]">
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );

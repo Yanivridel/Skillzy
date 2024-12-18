@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ModeToggle } from "./mode-toggle"
 // Icons
-import { Home, ShieldHalf, Search, Contact, User2, ChevronUp, LogIn, UserPlus ,BookOpenIcon} from "lucide-react"
+import { Home, User, ShieldHalf, Search, Contact, User2, ChevronUp, LogIn, UserPlus ,BookOpenIcon} from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenu } from "@radix-ui/react-dropdown-menu"
 
@@ -22,6 +22,11 @@ const navList = [
     title: "Home",
     url: "/",
     icon: Home,
+    },
+    {
+    title: "Profile",
+    url: "/profile",
+    icon: User,
     },
     {
     title: "About Us",
@@ -76,18 +81,22 @@ export function AppSidebar() {
                 {/* <SidebarGroupLabel>SKILLZY</SidebarGroupLabel> */}
                 <SidebarGroupContent>
                 <SidebarMenu>
-                    {navList.map((link) => (
-                    <SidebarMenuItem key={link.title}>
-                        <SidebarMenuButton asChild>
-                        <a className="cursor-pointer"
-                        onClick={() => navigate(link.url)}
-                        >
-                            <link.icon />
-                            <span>{link.title}</span>
-                        </a>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    ))}
+                {navList.map((link) => (
+  <SidebarMenuItem key={link.title}>
+    <SidebarMenuButton asChild>
+      <a
+        className="cursor-pointer flex items-center space-x-2  p-2 rounded-lg"
+        onClick={() => navigate(link.url)}
+      >
+        <link.icon className="w-5 h-5 " />
+        <span className="text-lg text-center bg-[var-(--button-bg)] hover:bg-[var-(--button-bg)]">
+          {link.title}
+        </span>
+      </a>
+    </SidebarMenuButton>
+  </SidebarMenuItem>
+))}
+
                 </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarGroup>
@@ -103,7 +112,8 @@ export function AppSidebar() {
                 <DropdownMenu>
                     {/* UserLogged */}
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton>
+                        <SidebarMenuButton
+                        >
                             {/* <User2 /> {userLogged.username} */}
                             <ChevronUp className="ml-auto" />
                         </SidebarMenuButton>
