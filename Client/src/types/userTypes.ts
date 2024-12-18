@@ -10,3 +10,5 @@ export interface IFormDataLogIn {
     email: string;
     password: string;
 }
+
+export interface Subject {name: string; img: string}
