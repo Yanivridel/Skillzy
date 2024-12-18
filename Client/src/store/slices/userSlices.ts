@@ -5,6 +5,7 @@ import mongoose, {  Types } from 'mongoose'
 
 interface UserState {
     isLogged: boolean;
+    _id: Types.ObjectId | null;
     fName: string;
     lName: string;
     email: string;
@@ -18,6 +19,7 @@ interface UserState {
 }
 
 interface SetUserPayload {
+    _id: Types.ObjectId;
     fName: string;
     lName: string;
     email: string;
@@ -39,6 +41,7 @@ interface LessonPayload {
 
 const initialState: UserState = {
     isLogged: false,
+    _id: null,
     fName: "",
     lName: "",
     email: "",
@@ -56,9 +59,10 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<SetUserPayload>) => {
-            const { fName, lName, email, userImage, phone, role, coins, tradeable, schedule, myTeachers } = action.payload;
+            const { fName, lName, email, userImage, phone, role, coins, tradeable, schedule, myTeachers, _id } = action.payload;
         
             if (fName && email && lName && phone && role && schedule && myTeachers) {
+                state._id = _id;
                 state.fName = fName;
                 state.lName = lName;
                 state.email = email;
@@ -67,6 +71,7 @@ const userSlice = createSlice({
                 state.schedule = schedule;
                 state.phone = phone;
                 state.role = role;
+                state.coins = coins;
                 state.tradeable = tradeable;
                 state.isLogged = true;
             } else {
@@ -74,6 +79,7 @@ const userSlice = createSlice({
             }
         },
         unsetUser: (state) => {
+            state._id = null;
             state.isLogged= false,
             state.fName= "",
             state.lName= "",
