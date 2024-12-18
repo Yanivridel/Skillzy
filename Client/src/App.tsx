@@ -1,12 +1,20 @@
-import { Button } from "./components/ui/button"
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { SidebarTrigger } from "./components/ui/sidebar";
+import { AppSidebar } from "./components/SideBar/SideBar";
+import Teachers from "./Pages/Teachers";
 
 
 function App() {
-
   return (
-    <div>
-      <Button variant="outline">Click me</Button>
-    </div>
+    <Router>
+          <AppSidebar />
+          <SidebarTrigger />
+      <Routes>
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/teachers" element={<Teachers />} />
+      </Routes>
+    </Router>
+
   )
 }
 
