@@ -1,12 +1,15 @@
-import { Button } from "./components/ui/button"
-
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Teachers from "./components/ui/teachers";
 
 function App() {
-
   return (
-    <div>
-      <Button variant="outline">Click me</Button>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/teachers" element={<Teachers />} />
+      </Routes>
+    </Router>
+
   )
 }
 
