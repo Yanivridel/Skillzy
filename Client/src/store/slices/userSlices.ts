@@ -58,8 +58,7 @@ const userSlice = createSlice({
         setUser: (state, action: PayloadAction<SetUserPayload>) => {
             const { fName, lName, email, userImage, phone, role, coins, tradeable, schedule, myTeachers } = action.payload;
         
-            if (fName && email && lName && phone && role && coins && tradeable 
-                && schedule && myTeachers) {
+            if (fName && email && lName && phone && role && schedule && myTeachers) {
                 state.fName = fName;
                 state.lName = lName;
                 state.email = email;

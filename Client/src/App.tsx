@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/SideBar/SideBar";
-import Teachers from "./Pages/Teachers";
 import Filter from "./components/Filter/filter";
 import TeacherProfilePage from "./Pages/TeacherProfilePage";
 import LogIn from "./components/Log/logIn";
@@ -13,6 +12,7 @@ import { getSelf } from "./utils/userApi";
 import { setUser } from "./store/slices/userSlices";
 import { useEffect } from "react";
 import About from "./Pages/About";
+import Lessons from "./Pages/Lessons";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,12 +33,10 @@ function App() {
     
     <Router>
           <AppSidebar />
-          <SidebarTrigger >
-          {/* <img src={logoLight} alt="Logo" width={40} height={40} /> */}
-          </SidebarTrigger >
+          <SidebarTrigger />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/teachers" element={<Teachers />} />
+        <Route path="/lessons" element={<Lessons />} />
         <Route path="/teacherProfile/:id" element={<TeacherProfilePage />} />
         <Route path="/filter" element={<Filter />} />
 
