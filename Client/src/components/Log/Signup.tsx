@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { IFormDataSingUp } from "@/types/userTypes";
-import { createUser } from "@/utils/userApi";
+import { createUser } from "@/utils/userApi"
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +19,12 @@ const SignUp = () => {
     role: "student",
   });
 
+  // Refs for inputs
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +34,7 @@ const SignUp = () => {
       [name]: value,
     });
   };
+
   const handleRoleSelect = (role: string) => {
     setFormData({
       ...formData,
@@ -35,20 +42,41 @@ const SignUp = () => {
     });
   };
 
+  // Add error and apply shake effect
+  const addShakeError = (ref: React.RefObject<HTMLInputElement>, message: string) => {
+    setMsgText(message);
+    if (ref.current) {
+      ref.current.classList.add("shake");
+      setTimeout(() => ref.current?.classList.remove("shake"), 500); // Remove shake after 500ms
+    }
+  };
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (confirmPassword !== formData.password){
-        setMsgText("The passwords you entered do not match. Please try again.")
-        return;
-      }
-    const data = await createUser(formData)
-    console.log(data);
-     
+
+    // Validate passwords match
+    if (confirmPassword !== formData.password) {
+      addShakeError(confirmPasswordRef, "The passwords you entered do not match. Please try again.");
+      return;
+    }
+
+    // Validate phone number
+    if (formData.phone.length !== 10) {
+      addShakeError(phoneRef, "Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    // API call
+    setLoading(true);
+    const data = await createUser(formData);
 
     if (data.status === 409) {
-        setMsgText("email or phone already exists")
-        return;
+      addShakeError(emailRef, "Email or phone already exists.");
+      setLoading(false);
+      return;
     }
+
+    // Reset form on success
     setLoading(false);
     setFormData({
       fName: "",
@@ -58,164 +86,175 @@ const SignUp = () => {
       password: "",
       role: "",
     });
-    navigate("/")
-    // console.log(formData);
+    navigate("/");
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h2 className="text-xl font-bold text-center">Sign Up</h2>
-      <div>{msgText}</div>
-      <form onSubmit={(e) => handleFormSubmit(e)} className="space-y-4">
-        <div>
-          <label htmlFor="fName" className="block">
-            First Name
-          </label>
-          <input
-            id="fName"
-            name="fName"
-            type="fName"
-            value={formData.fName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="lName" className="block ">
-            Last Name
-          </label>
-          <input
-            id="lName"
-            name="lName"
-            type="text"
-            value={formData.lName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phone" className="block">
-            Phone Number
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="number"
-            maxLength={10} 
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block">
-            Password
-          </label>
-          <div className="relative">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded"
-              required
-              autoComplete="new-password"
-            />
+    <div className="thin-font flex justify-center  flex-col h-[100%] m-auto w-[80%]">
+      <div className="bg-[var(--container-bg)] max-w-md mx-auto p-4 m-4 h-[100%] rounded-lg ">
+        <h2 className="bubble-font text-center pb-3">Sign Up</h2>
+        <form onSubmit={handleFormSubmit} className="space-y-2 ">
+          <div className="md:flex gap-4" >
+            <div >
+              <label htmlFor="fName" className="block">
+                First Name
+              </label>
+              <input
+                id="fName"
+                name="fName"
+                type="text"
+                value={formData.fName}
+                onChange={handleChange}
+                className=" w-full px-4 py-2 border rounded"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="lName" className="block">
+                Last Name
+              </label>
+              <input
+                id="lName"
+                name="lName"
+                type="text"
+                value={formData.lName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded"
+                required
+              />
+            </div>
+          </div>
+          <div className="md:flex gap-4"> 
+            <div>
+              <label htmlFor="phone" className="block">
+                Phone Number
+              </label>
+              <input
+                ref={phoneRef}
+                id="phone"
+                name="phone"
+                type="text"
+                maxLength={10}
+                value={formData.phone}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
+                className="w-full px-4 py-2 border rounded"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block">
+                Email
+              </label>
+              <input
+                ref={emailRef}
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="password" className="block">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                ref={passwordRef}
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded"
+                required
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3"
+              >
+                {!showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="confirmPassword" className="block">
+              Confirm Password
+            </label>
+            <div className="relative pb-4">
+              <input
+                ref={confirmPasswordRef}
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-2 border rounded"
+                required
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className=" absolute right-3 top-3"
+              >
+                {!showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-center space-x-4">
             <button
+              onClick={() => handleRoleSelect("student")}
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3"
+              className={`px-6 py-2 rounded-lg ${
+                formData.role === "student"
+                  ? "bg-[var(--button-bg)] text-white"
+                  : "bg-gray-200 text-black"
+              }`}
             >
-              {!showPassword ? <FiEyeOff /> : <FiEye />}
+              Student
+            </button>
+            <button
+              onClick={() => handleRoleSelect("teacher")}
+              type="button"
+              className={`px-6 py-2 rounded-lg ${
+                formData.role === "teacher"
+                  ? "bg-[var(--button-bg)] text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              Teacher
             </button>
           </div>
-        </div>
-        <div>
-          <label htmlFor="confirmPassword" className="block">
-          Confirm Password
-          </label>
-          <div className="relative">
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e)=>setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded"
-              required
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3"
-            >
-              {!showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-center space-x-4">
+          <p className="text-red-500">{msgText}</p>
           <button
-            onClick={() => handleRoleSelect("student")}
-            className={`px-6 py-2 rounded-lg ${
-              formData.role === "student"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
+            type="submit"
+            disabled={loading}
+            className={` bg-[var(--button-bg)] w-full button-custom text-white py-2 rounded ${
+              loading ? "bg-gray-500" : ""
             }`}
           >
-            Student
+            {loading ? "Loading..." : "Sign Up"}
           </button>
-
-          <button
-            onClick={() => handleRoleSelect("teacher")}
-            className={`px-6 py-2 rounded-lg ${
-              formData.role === "teacher"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-black"
-            }`}
-          >
-            Teacher
-          </button>
+        </form>
         </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full bg-blue-500 text-white py-2 rounded ${
-            loading ? "bg-gray-500" : ""
-          }`}
-        >
-          {loading ? "Loading..." : "Sign Up"}
-        </button>
-      </form>
-
-      <div className="text-center mt-4">
-        <p>
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-500">
-            Login
-          </Link>
-        </p>
+        <div className="text-center">
+          <p>
+            Already have an account?{" "}
+            <Link to="/login" className="text-[var(--button-bg)]">
+              Login
+            </Link>
+          </p>
       </div>
     </div>
   );

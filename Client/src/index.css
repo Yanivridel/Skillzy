@@ -8,9 +8,31 @@
   box-sizing: border-box;
 }
 
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: #ededed;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -26,7 +48,7 @@
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
+    /* --border: 0 0% 89.8%; */
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
     --radius: 0.5rem;
@@ -35,22 +57,24 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 24.9, 100%, 61.8%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
+    /* --sidebar-border: 220 13% 91%; */
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* My Own */
     --dropdown-bg: hsl(214, 6%, 76%);
     --dropdown-bg-hover: hsl(214, 15%, 91%);
+    --container-bg: #ff8d3c;
+    --button-bg: #58c2fb;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: #252424;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -74,18 +98,20 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 132, 23.8%, 23.2%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
+    /* --sidebar-border: 240 3.7% 15.9%; */
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* My Own */
     --dropdown-bg: hsl(215, 27.9%, 16.9%);
     --dropdown-bg-hover: #334155;
+    --container-bg: #345c3c;
+    --button-bg: #fec062;
   }
 }
 
@@ -93,11 +119,34 @@
   background-color: var(--dropdown-bg-hover);
 }
 
+@font-face {
+  font-family: "bubble";
+  src: url("../src/assets/fonts/atop-font/Atop-R99O3.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "thin";
+  src: url("../src/assets/fonts/Fredoka-VariableFont_wdth,wght.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.thin-font {
+  font-family: "thin";
+}
+.bubble-font {
+  font-family: "bubble";
+  font-size: xx-large;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[var(--background)] text-foreground;
+    font-family: "thin";
   }
 }
