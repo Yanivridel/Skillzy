@@ -47,7 +47,7 @@ function Home() {
     <div className="flex justify-center p-5 text-[30px]">Choose the subject you want to study</div>
       <div className="grid w-[100%]  p-[10px] ">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 ">
-          {subjects.map(subject =><Link key={subject.name} to={``}> <SubCard subject={subject}/></Link>)}
+          {subjects.map(subject =><Link key={subject.name} to={`/lessons?subject=${subject.name}`}> <SubCard subject={subject}/></Link>)}
         </div>
       </div>
     </div>
