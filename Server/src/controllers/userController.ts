@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { MongoError } from 'mongodb'; 
 import userModel from "../models/userModel";
+import Lesson from '../models/lessonModel';
 import jwt from 'jsonwebtoken';
 
 // utils imports
@@ -310,7 +311,7 @@ export const getTeachers = async (req: Request, res: Response): Promise<void> =>
     }
 }
 
-//  GET USER BY ID - 
+//  GET USER BY ID - PROGRESS
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id:userId } = req.params;
@@ -320,7 +321,7 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
             return;
         }
 
-        const user = await userModel.findOne({ _id: userId }).populate("myTeachers", "schedule");
+        const user = await userModel.findOne({ _id: userId }).populate("myTeachers").populate("schedule");
 
         if (!user) {
             res.status(404).json({ status:"error", message: 'User not Found' });
@@ -331,6 +332,49 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
             status: "success",
             message: "teachers found successfully",
             user
+        })
+    } catch (error) {
+        console.log(error); // dev mode
+        res.status(500).json({
+            status: "error",
+            message: "An unexpected error occurred",
+            error: error instanceof Error ? error.message : 'Unknown error',
+        });
+    }
+}
+
+
+// HANDLE COINS - 
+export const handleCoins = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const authenticatedReq = req as AuthenticatedRequest;
+        const { userId } = authenticatedReq;
+        let { number } = req.params;
+
+        if(!userId || !number) {
+            res.status(400).send({status: "error", message: "Missing required parameters"});
+            return;
+        }
+        
+        const user = await userModel.findOne({ _id: userId });
+
+        if (!user) {
+            res.status(404).json({ status:"error", message: 'User not Found' });
+            return;
+        }
+
+        if(user.coins + parseFloat(number) < 0) {
+            res.status(400).send({ status:"error", message: 'Not enough coins' })
+            return;
+        }
+
+        user.coins += parseFloat(number);
+        await user.save();
+
+        res.status(200).send({
+            status: "success",
+            message: "Coins handled successfully",
+            coins: user.coins
         })
     } catch (error) {
         console.log(error); // dev mode

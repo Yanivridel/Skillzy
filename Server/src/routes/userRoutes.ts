@@ -7,7 +7,7 @@ import {
     getUserById,
     likeTeacher,
     unlikeTeacher,
-    // handleCoins,
+    handleCoins,
     getTeachers
 } from '../controllers/userController';
 import { authenticateToken } from "../middleware/authMiddleware";
@@ -28,7 +28,7 @@ router.post('/like-teacher/:id', authenticateToken, likeTeacher);
 
 router.post('/unlike-teacher/:id', authenticateToken, unlikeTeacher);
 
-// router.patch('/coins', handleCoins);
+router.patch('/coins/:number', authenticateToken, handleCoins);
 
 router.get('/teachers', getTeachers);
 
