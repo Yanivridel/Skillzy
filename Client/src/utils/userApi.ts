@@ -27,3 +27,17 @@ export const checkLogin = async ({email, password}: IFormDataLogIn) => {
         throw error;
     }
 };
+
+export const getSelf = async (token: string) => {
+    try {
+        const { data } = await axios.get(`${API_URL}/api/users/get-self`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return data;
+    } catch (error) {
+        console.error('Auth check error:', error);
+        throw error;
+    }
+};

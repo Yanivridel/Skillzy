@@ -5,9 +5,28 @@ import Teachers from "./Pages/Teachers";
 import LogIn from "./components/Log/logIn";
 import SignUp from "./components/Log/Signup";
 import Home from "./Pages/Home";
+import { useDispatch } from "react-redux";
+import { getCookie } from "./utils/cookies";
+import { getSelf } from "./utils/userApi";
+import { setUser } from "./store/slices/userSlices";
+import { useEffect } from "react";
 
 
 function App() {
+  const dispatch = useDispatch();
+
+  const reloadUser = async () => {
+    const token = getCookie('token');
+    if (token) {
+        const user = await getSelf(token);
+        if(user)
+          dispatch(setUser(user));
+    }
+  }
+
+  useEffect( () => {
+    reloadUser();
+  }, []);
   return (
     <Router>
           <AppSidebar />
