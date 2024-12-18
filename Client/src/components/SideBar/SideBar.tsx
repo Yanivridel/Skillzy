@@ -33,6 +33,11 @@ const navList = [
     icon: User,
     },
     {
+    title: "Lessons",
+    url: "/lessons",
+    icon: BookOpenIcon,
+    },
+    {
     title: "About Us",
     url: "/about",
     icon: ShieldHalf,
@@ -41,12 +46,7 @@ const navList = [
     title: "Contact",
     url: "/contact",
     icon: Contact,
-    },
-    {
-    title: "Lessons",
-    url: "/lessons",
-    icon: BookOpenIcon,
-    },
+    }
 ]
 const navUser = [
     {
@@ -65,7 +65,7 @@ export function AppSidebar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userLogged = useSelector((state: RootState) => state.userLogged);
-    
+    console.log(userLogged)
     const handleSignOut = () => {
         dispatch(unsetUser());
         navigate('/login');

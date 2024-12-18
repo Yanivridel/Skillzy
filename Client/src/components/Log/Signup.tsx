@@ -11,7 +11,8 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [msgText, setMsgText] = useState("");
+  const [ phoneEmailError , setPhoneEmailError ] = useState("");
+  const [ passwordError , setPasswordError ] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formData, setFormData] = useState<IFormDataSingUp>({
     fName: "",
@@ -38,6 +39,8 @@ const SignUp = () => {
       ...formData,
       [name]: value,
     });
+    removePasswordError();
+    removePhoneEmailError();
   };
 
   const handleRoleSelect = (role: string) => {
@@ -45,57 +48,65 @@ const SignUp = () => {
       ...formData,
       role: role,
     });
+    removePasswordError();
+    removePhoneEmailError();
   };
 
-  // Add error and apply shake effect
-  const addShakeError = (ref: React.RefObject<HTMLInputElement>, message: string) => {
-    setMsgText(message);
-    if (ref.current) {
-      ref.current.classList.add("shake");
-      setTimeout(() => ref.current?.classList.remove("shake"), 500); // Remove shake after 500ms
-    }
+  const removePasswordError = () => setPasswordError("");
+  const removePhoneEmailError = () => setPhoneEmailError("");
+
+  const addError = (errorType: string, message: string, refs: React.RefObject<HTMLInputElement>[] = []) => {
+    if (errorType === 'email') setPhoneEmailError(message);
+    else if (errorType === 'password') setPasswordError(message);
+  
+    refs.forEach((ref) => {
+      if (ref.current) {
+        ref.current.classList.add('shake');
+        setTimeout(() => {
+          ref.current?.classList.remove('shake');
+        }, 500);
+      }
+    });
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Clear previous error messages
-    setMsgText("");
-
+    setLoading(true);
+  
     // Validate passwords match
     if (confirmPassword !== formData.password) {
-      addShakeError(confirmPasswordRef, "The passwords you entered do not match. Please try again.");
+      addError("password", "The Passwords Do Not Match", [passwordRef, confirmPasswordRef]);
+      setLoading(false); // Stop loading after validation failure
       return;
     }
-
+  
     // Validate phone number
     if (formData.phone.length !== 10) {
-      addShakeError(phoneRef, "Phone number must be exactly 10 digits.");
+      addError("email", "Phone number must be exactly 10 digits.", [phoneRef]);
+      setLoading(false); // Stop loading after validation failure
       return;
     }
-
-    // API call
-    setLoading(true);
-    const data = await createUser(formData);
-    console.log(data);
-    if (data.status === 409) {
-      console.log("status 409")
-      addShakeError(emailRef, "Email or phone already exists.");
+  
+    try {
+      await createUser(formData);
+      navigate("/login");
+      alert("Account Added Successfully")
+    } catch (err) {
+      console.error("Login error: ", err);
+      addError("email", "Email or Phone Already Taken", [emailRef, phoneRef]);
+    } finally {
       setLoading(false);
-      return;
+      setConfirmPassword("");
+      setFormData({
+        fName: "",
+        lName: "",
+        phone: "",
+        email: "",
+        password: "",
+        role: "student",
+      });
+  
     }
-
-    // Reset form on success
-    setLoading(false);
-    setFormData({
-      fName: "",
-      lName: "",
-      phone: "",
-      email: "",
-      password: "",
-      role: "student",
-    });
-    navigate("/");
   };
 
   return (
@@ -112,6 +123,7 @@ const SignUp = () => {
                 id="fName"
                 name="fName"
                 type="text"
+                maxLength={10}
                 value={formData.fName}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
@@ -126,6 +138,7 @@ const SignUp = () => {
                 id="lName"
                 name="lName"
                 type="text"
+                maxLength={10}
                 value={formData.lName}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
@@ -140,6 +153,7 @@ const SignUp = () => {
               </label>
               <input
                 ref={phoneRef}
+                style={{ borderColor: phoneEmailError ? "red" : "unset"}}
                 id="phone"
                 name="phone"
                 type="text"
@@ -161,6 +175,7 @@ const SignUp = () => {
               </label>
               <input
                 ref={emailRef}
+                style={{ borderColor: phoneEmailError ? "red" : "unset"}}
                 id="email"
                 name="email"
                 type="email"
@@ -171,6 +186,7 @@ const SignUp = () => {
               />
             </div>
           </div>
+          {phoneEmailError && <div className="text-red-500 text-md text-center">{phoneEmailError}</div>}
           <div>
             <label htmlFor="password" className="block">
               Password
@@ -178,6 +194,7 @@ const SignUp = () => {
             <div className="relative">
               <input
                 ref={passwordRef}
+                style={{ borderColor: passwordError ? "red" : "unset"}}
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -200,14 +217,15 @@ const SignUp = () => {
             <label htmlFor="confirmPassword" className="block">
               Confirm Password
             </label>
-            <div className="relative pb-4">
+            <div className="relative">
               <input
                 ref={confirmPasswordRef}
+                style={{ borderColor: passwordError ? "red" : "unset"}}
                 id="confirmPassword"
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => { setConfirmPassword(e.target.value); removePasswordError()}}
                 className="w-full px-4 py-2 border rounded text-[var(--input-text)]"
                 required
                 autoComplete="new-password"
@@ -221,6 +239,7 @@ const SignUp = () => {
               </button>
             </div>
           </div>
+          {passwordError && <div className="text-red-500 text-md text-center">{passwordError}</div>}
           <div className="flex justify-center space-x-4">
             <button
               onClick={() => handleRoleSelect("student")}
@@ -245,7 +264,6 @@ const SignUp = () => {
               Teacher
             </button>
           </div>
-          <p className="text-red-500">{msgText}</p>
           <button
             type="submit"
             disabled={loading}
