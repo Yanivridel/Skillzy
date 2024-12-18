@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { hashPassword, comparePassword } from "../utils/auth";
 import { AuthenticatedRequest } from 'src/types/expressTypes';
 import mongoose from 'mongoose';
+import { getCoordinatesByLocation } from './../utils/maps';
 
 const JTW_EXPIRATION = { expiresIn: '1d'};
 
@@ -153,7 +154,7 @@ export const getSelf = async (req: Request, res: Response): Promise<void> => {
 };
 
 // EDIT PROFILE - Done
-interface ChangeUsernameRequestBody {
+interface ChangeProfileRequestBody {
     fName?: string;
     lName?: string;
     userImage?: string;
@@ -161,23 +162,32 @@ interface ChangeUsernameRequestBody {
     tradeable?: boolean;
     location?: string;
     bio?: string;
+    coordinates?: number[];
 }
-export const editProfile = async (req: Request<{},{}, ChangeUsernameRequestBody>, res: Response): Promise<void> => {
+export const editProfile = async (req: Request<{},{}, ChangeProfileRequestBody>, res: Response): Promise<void> => {
     try {
         const authenticatedReq = req as AuthenticatedRequest;
         const { userId } = authenticatedReq;
         const { fName, lName, userImage, video, tradeable, location, bio } = req.body;
+        let coordinates;
 
-        console.log(userId);
-
-        const fieldsToUpdate : ChangeUsernameRequestBody = {} ;
+        const fieldsToUpdate : ChangeProfileRequestBody = {} ;
         if(fName) fieldsToUpdate["fName"] = fName;
         if(lName) fieldsToUpdate["lName"] = lName;
         if(userImage) fieldsToUpdate["userImage"] = userImage;
         if(tradeable) fieldsToUpdate["tradeable"] = tradeable;
         if(video) fieldsToUpdate["video"] = video;
-        if (location && location.trim() !== '') fieldsToUpdate["location"] = location;
         if (bio && bio.trim() !== '') fieldsToUpdate["bio"] = bio;
+        if (location && location.trim() !== '') {
+            fieldsToUpdate["location"] = location;
+
+            coordinates = await getCoordinatesByLocation(location);
+            if (!coordinates) {
+                res.status(400).json({status: "error", message: 'Invalid location provided' });
+                return;
+            }
+            fieldsToUpdate["coordinates"] = coordinates;
+        }
 
         const updatedUser = await userModel.findOneAndUpdate(
             { _id: userId },
