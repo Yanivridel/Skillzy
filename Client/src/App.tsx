@@ -10,6 +10,7 @@ import { getCookie } from "./utils/cookies";
 import { getSelf } from "./utils/userApi";
 import { setUser } from "./store/slices/userSlices";
 import { useEffect } from "react";
+import About from "./Pages/About";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/teachers" element={<Teachers />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
 
