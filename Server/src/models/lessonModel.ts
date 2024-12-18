@@ -8,6 +8,7 @@ interface ILesson extends Document {
     teacher: Types.ObjectId;
     description: string;
     level: string;
+    price: number;
     membersLimit: number;
     participants: Types.ObjectId[];
     createdAt: Date
@@ -47,6 +48,10 @@ const lessonSchema = new Schema<ILesson>({
         required: true,
         enum: ["Beginner", "Intermediate", "Advanced", "Expert"],
         default: 'beginner'
+    },
+    price: {
+        type: Number,
+        required: true
     },
     membersLimit: {
         type: Number,

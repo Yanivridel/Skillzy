@@ -195,7 +195,7 @@ export const editProfile = async (req: Request<{},{}, ChangeUsernameRequestBody>
 
         res.status(200).json({
             status: "success",
-            message: "Username updated successfully",
+            message: "User updated successfully",
             user: updatedUser,
         });
     } catch (error) {
