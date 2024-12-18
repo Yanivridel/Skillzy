@@ -2,7 +2,10 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { IFormDataSingUp } from "@/types/userTypes";
-import { createUser } from "@/utils/userApi";
+import { createUser } from "@/utils/userApi"
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,13 +22,15 @@ const SignUp = () => {
     role: "student",
   });
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userLogged = useSelector((state: RootState) => state.userLogged);
+
   // Refs for inputs
   const emailRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
-
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,8 +77,9 @@ const SignUp = () => {
     // API call
     setLoading(true);
     const data = await createUser(formData);
-
+    console.log(data);
     if (data.status === 409) {
+      console.log("status 409")
       addShakeError(emailRef, "Email or phone already exists.");
       setLoading(false);
       return;

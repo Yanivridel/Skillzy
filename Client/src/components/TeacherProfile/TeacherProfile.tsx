@@ -17,7 +17,8 @@ export default function TeacherProfile() {
                 <div className='border w-[30%] h-[100%]'>Teacher Photo</div>
                 <div className='border w-[70%] h-[100%]'>
                     <div className='border  h-[50%]'>
-                        <p className='text-xl font-bold	'>Jeremy Rose</p>
+                        <p className='text-xl font-bold'>Jeremy Rose</p>
+                        <p className='text-xl font-bold'>Email</p>
                     </div>
                     <div className='border h-[50%]'>
                         <p className='flex items-center gap-[10px] border'><FaMessage /> Send Message</p>

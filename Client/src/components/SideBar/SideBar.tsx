@@ -15,6 +15,10 @@ import { ModeToggle } from "./mode-toggle"
 import { Home, User, ShieldHalf, Search, Contact, User2, ChevronUp, LogIn, UserPlus ,BookOpenIcon} from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenu } from "@radix-ui/react-dropdown-menu"
+import { unsetUser } from "@/store/slices/userSlices"
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { RootState } from "@/store"
 
 
 const navList = [
@@ -59,13 +63,13 @@ const navUser = [
 
 export function AppSidebar() {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
-    // const userLogged = useSelector((state: RootState) => state.userLogged);
+    const dispatch = useDispatch();
+    const userLogged = useSelector((state: RootState) => state.userLogged);
     
-    // const handleSignOut = () => {
-    //     dispatch(unsetUser());
-    //     navigate('/login');
-    // }
+    const handleSignOut = () => {
+        dispatch(unsetUser());
+        navigate('/login');
+    }
 
     return (
     <Sidebar 
@@ -108,13 +112,12 @@ export function AppSidebar() {
             <SidebarMenu>
                 <SidebarMenuItem>
                 <ModeToggle/>
-                {/* {userLogged.isLogged ?  */}
+                {userLogged.isLogged ? 
                 <DropdownMenu>
                     {/* UserLogged */}
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton
-                        >
-                            {/* <User2 /> {userLogged.username} */}
+                        <SidebarMenuButton>
+                            <User2 /> {userLogged.fName + " " + userLogged.lName}
                             <ChevronUp className="ml-auto" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
@@ -129,13 +132,13 @@ export function AppSidebar() {
                             <span>Billing</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="dropdown-bg-hover p-2 pl-4 rounded-xl cursor-pointer"
-                        // onClick={handleSignOut}
+                        onClick={handleSignOut}
                         >
                             <span>Sign out</span>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {/* : */}
+                :
                 <SidebarMenu>
                 {navUser.map((link) => (
                     <SidebarMenuItem key={link.title}>
@@ -150,7 +153,7 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 ))}
                 </SidebarMenu>
-                {/* } */}
+                }
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarFooter>
