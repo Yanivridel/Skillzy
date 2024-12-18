@@ -1,8 +1,10 @@
+import TeacherCard from "../components/TeacherCard/teacherCard"
 
+TeacherCard
 const Teachers = () => {
     return (
       <div>
-        Teachers
+        <TeacherCard />
       </div>
     )
   }
