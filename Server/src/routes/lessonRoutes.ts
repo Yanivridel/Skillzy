@@ -3,8 +3,9 @@ import {
     createLesson,
     getAllLessons,
     // getLessonById,
-    // editLesson,
-    // deleteLesson,
+    editLesson,
+    deleteLesson,
+    registerForLesson
 } from '../controllers/lessonController';
 import { authenticateToken } from "../middleware/authMiddleware";
 
@@ -16,9 +17,12 @@ router.get("/", getAllLessons);
 
 // router.get('/:id', getLessonById);
 
-// router.patch('/edit/:id', authenticateToken, editLesson);
+router.post('/register/:lessonId', authenticateToken, registerForLesson);
 
-// router.delete('/:id', authenticateToken, deleteLesson);
+
+router.patch('/edit', authenticateToken, editLesson);
+
+router.delete('/:id', authenticateToken, deleteLesson);
 
 
 export default router;
