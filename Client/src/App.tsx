@@ -14,7 +14,6 @@ import { setUser } from "./store/slices/userSlices";
 import { useEffect } from "react";
 import About from "./Pages/About";
 
-
 function App() {
   const dispatch = useDispatch();
 
@@ -31,9 +30,12 @@ function App() {
     reloadUser();
   }, []);
   return (
+    
     <Router>
           <AppSidebar />
-          <SidebarTrigger />
+          <SidebarTrigger >
+          {/* <img src={logoLight} alt="Logo" width={40} height={40} /> */}
+          </SidebarTrigger >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/teachers" element={<Teachers />} />

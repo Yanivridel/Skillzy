@@ -58,16 +58,19 @@ export function AppSidebar() {
     // }
 
     return (
-    <Sidebar>
+    <Sidebar 
+    >
+
 
         <SidebarHeader>
-            <h1 className="text-2xl font-bold text-center text-blue-600">Forkfolio</h1>
+    
+            <h1 className="bubble-font text-center  text-black">SKILLZY</h1>
         </SidebarHeader>
 
         {/* Content */}
         <SidebarContent>
             <SidebarGroup>
-                <SidebarGroupLabel>Forkfolio</SidebarGroupLabel>
+                <SidebarGroupLabel>SKILLZY</SidebarGroupLabel>
                 <SidebarGroupContent>
                 <SidebarMenu>
                     {navList.map((link) => (
