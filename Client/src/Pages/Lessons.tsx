@@ -20,8 +20,16 @@ const Lessons = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [subject , setSubject] = useState("")
+  const [title , setTitle] = useState("")
+  const [maxPrice , setMaxPrice] = useState(1000)
+  const [isGroup , setIsGroup] = useState("all")
+  const [level , setLevel] = useState("all")
+  const [day , setDay] = useState("all")
+  const [hours , setHours] = useState([0,24])
+  
   const filteredLessons = lessons.filter((lesson) => {
-    const subject = searchParams.get("subject") as string;
+    const subject = searchParams.get("subject");
     const title = searchParams.get("title") as string;
     const maxPrice = parseFloat(searchParams.get("price") as string);
     const isGroup = searchParams.get("isGroup") as string;
