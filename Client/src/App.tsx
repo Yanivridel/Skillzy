@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Teachers from "./components/ui/teachers";
-import { AppSidebar } from "./components/SideBar";
 import { SidebarTrigger } from "./components/ui/sidebar";
+import { AppSidebar } from "./components/SideBar/SideBar";
+import Teachers from "./Pages/Teachers";
 
 
 function App() {
