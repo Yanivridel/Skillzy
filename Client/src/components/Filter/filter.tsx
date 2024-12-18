@@ -70,12 +70,44 @@ export default function Filter() {
         </div>
         <div className='  p-5 border-b'>
           <div className='h-[50px] text-xl'>Price per lesson</div>
-          <Slider className='h-[50px]  w-[250px]' defaultValue={[33]} max={100} step={1} />
+          <Slider className='h-[50px] w-[200px]' defaultValue={[33]} max={100} step={1} />
         </div>
         <div className='grid justify-center justify-items-center border-b'>
           <div className='p-10'>By rating:</div>
           <div>
-          <Slider className='h-[50px] w-[250px]' defaultValue={[33]} max={100} step={1} />
+            <Slider className='h-[50px] w-[250px]' defaultValue={[33]} max={100} step={1} />
+          </div>
+        </div>
+        <div className='grid justify-items-center p-5 border-b'>By Date:
+          <div className=''>
+          <select>
+            <option value="ss">Sunday</option>
+            <option value="mo">Monday</option>
+            <option value="tu">Tuesday</option>
+            <option value="we">Wednesday</option>
+            <option value="th">Thursday</option>
+            <option value="fr">Friday</option>
+            <option value="sa">Saturday</option>
+          </select>
+          </div>
+        </div>
+        <div className='grid justify-items-center p-5 border-b'>By Level:
+          <div>
+          <select>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Expert">Expert</option>
+          </select>
+          </div>
+        </div>
+        <div className='grid justify-items-center p-5 border-b'> Group
+          <div>
+          <select>
+            <option value="Solo">All</option>
+            <option value="Solo">Solo</option>
+            <option value="Group">Group</option>
+          </select>
           </div>
         </div>
         <div className='grid justify-items-center  p-5'>

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import LessonCard from "../components/TeacherCard/teacherCard"
 import { Lesson } from "@/types/lessonTypes";
 import { getAllLessons } from "@/utils/lessonApi";
-
+import CheckpointMap from "@/components/Map/CheckpointMap";
+import Filter from "@/components/Filter/filter";
 
 
 const Lessons = () => {
@@ -19,8 +20,16 @@ const Lessons = () => {
   }, [])
 
     return (
+      <div className="flex">
       <div>
-        {lessons.map(lesson => <LessonCard lesson={lesson}/>)}
+        <div className="border w-[85%] h-[5%]">
+          {/* <CheckpointMap /> */}
+        </div>
+        <div className="w-[85%]">
+          {lessons.map(lesson => <LessonCard lesson={lesson}/>)}
+        </div>
+      </div>
+      <div className="fixed right-0 w-[25%] border overflow-auto	"><Filter /></div>
       </div>
     )
   }
