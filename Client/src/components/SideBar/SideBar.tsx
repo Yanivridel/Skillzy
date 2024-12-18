@@ -24,11 +24,6 @@ const navList = [
     icon: Home,
     },
     {
-    title: "Recipes",
-    url: "/recipes",
-    icon: Search,
-    },
-    {
     title: "About Us",
     url: "/about",
     icon: ShieldHalf,
@@ -124,7 +119,7 @@ export function AppSidebar() {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                :
+                {/* : */}
                 <SidebarMenu>
                 {navUser.map((link) => (
                     <SidebarMenuItem key={link.title}>
