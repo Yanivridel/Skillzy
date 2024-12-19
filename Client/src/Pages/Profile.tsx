@@ -145,7 +145,7 @@ const Profile = () => {
             <div className="block mb-2">
               <strong>Bio:</strong>
               {isEditing ? (
-                <textarea
+                <input
                   value={editedProfile?.bio || ""}
                   onChange={(e) => handleInputChange(e, "bio")}
                   className="border rounded px-2 py-1 w-full md:w-[80%] mx-auto"
@@ -156,26 +156,54 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        <div className="saved-teachers mb-6 flex flex-col justify-center items-center">
+          <h2 className="text-xl font-semibold mb-2">Saved Teachers</h2>
+          <ul className="list-disc pl-6">
+            {profile?.myTeachers?.length > 0 ? (
+              profile.myTeachers.map((teacher, index) => (
+                <li key={index}>{teacher}</li>
+              ))
+            ) : (
+              <li>No saved teachers</li>
+            )}
+          </ul>
+        </div>
 
-        <div className="flex justify-between gap-4">
+        <div className="lessons mb-6 flex flex-col justify-center items-center">
+          <h2 className="text-xl font-semibold mb-2">Your Lessons</h2>
+          <ul className="list-disc pl-6">
+            {profile?.schedule?.length > 0 ? (
+              profile.schedule.map((lesson, index) => (
+                <li key={index}>{lesson}</li>
+              ))
+            ) : (
+              <li>No lessons scheduled</li>
+            )}
+          </ul>
+        </div>
+
+        <div className="flex justify-center gap-4 items-center">
           {!isEditing ? (
             <button
               onClick={handleEditClick}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg w-full md:w-[30%]"
+              className="px-6 py-3 bg-[hsl(25,100%,62%)] text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-[hsl(25,90%,55%)] shadow-md hover:shadow-lg transform hover:-translate-y-1 w-full md:w-[30%]"
+
+
             >
               Edit
             </button>
           ) : (
-            <div className="flex gap-4 w-full">
+            <div className="flex justify-center gap-4 items-center w-full">
               <button
                 onClick={handleSaveClick}
-                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg w-full md:w-[30%]"
-              >
+                className="px-6 py-3 bg-green-800 text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-green-900 shadow-md hover:shadow-lg transform hover:-translate-y-1 w-full md:w-[30%]"
+                >
                 Save
               </button>
               <button
                 onClick={handleCancelClick}
-                className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-lg w-full md:w-[30%]"
+                className="px-6 py-3 bg-red-800 text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-red-900 shadow-md hover:shadow-lg transform hover:-translate-y-1 w-full md:w-[30%]"
+
               >
                 Cancel
               </button>

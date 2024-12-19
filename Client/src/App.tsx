@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/SideBar/SideBar";
-import Filter from "./components/Filter/filter";
-import TeacherProfilePage from "./Pages/TeacherProfilePage";
 import LogIn from "./components/Log/logIn";
 import SignUp from "./components/Log/Signup";
 import Home from "./Pages/Home";
@@ -17,6 +15,7 @@ import Profile from "./Pages/Profile";
 import logoLight from "./assets/logo/light.png"
 import logoDark from "./assets/logo/dark.png"
 import TeacherProfile from "./components/TeacherProfile/TeacherProfile";
+import Contact from "./Pages/Contact";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,11 +43,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        {/* <Route path="/about" element={<About />} /> */}
-        {/* <Route path="/contact" element={<Contact />} /> */}
+        <Route path="/contact" element={<Contact />} />
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/teacherProfile/:id" element={<TeacherProfile />} />
-        <Route path="/filter" element={<Filter />} />
 
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
