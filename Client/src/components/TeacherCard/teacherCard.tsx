@@ -4,17 +4,20 @@ import { CiClock2 } from "react-icons/ci";
 import { AiOutlineContacts } from "react-icons/ai";
 import { Lesson } from '@/types/lessonTypes';
 import Anonymous from './../../assets/images/anonymous-user.png';
+import { registerLesson } from '@/utils/lessonApi';
 
 interface LessonCardProps {
   lesson: Lesson;
+  profile: boolean;
 }
 
-export default function LessonCard({ lesson }: LessonCardProps) {
+export default function LessonCard({ lesson, profile}: LessonCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false); // מצב המודאל (פתוח/סגור)
   lesson.startDate = new Date(lesson.startDate);
 
   // פונקציה לפתיחת המודאל
-  const openModal = () => {
+  const openModal = async () => {
+    await registerLesson(lesson._id as any);
     setIsModalOpen(true);
   };
 
@@ -62,14 +65,14 @@ export default function LessonCard({ lesson }: LessonCardProps) {
           </div>
 
           {/* "Register" Button */}
-          <div className="flex justify-center mb-4">
+          {!profile && <div className="flex justify-center mb-4">
             <button 
               className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 transition duration-300"
               onClick={openModal}
             >
               Register for Lesson
             </button>
-          </div>
+          </div>}
 
           {/* Lesson Footer (optional additional info like price) */}
           <div className="border-t pt-4 text-center text-gray-500 text-sm">
