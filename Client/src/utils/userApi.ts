@@ -42,3 +42,15 @@ export const getSelf = async (token: string) => {
     }
 };
 
+
+export const getUserById = async (userId : string) => {
+    try {
+        const { data } = await axios.get(`${API_URL}/api/users/${userId}`);
+        return data;
+    } 
+    catch (error) {
+        console.error('Failed fetching user by id error:', error);
+        throw error;
+    }
+};
+
