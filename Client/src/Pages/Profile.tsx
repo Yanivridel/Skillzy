@@ -1,3 +1,4 @@
+import { getUserById } from '@/utils/userApi';
 import React, { useEffect, useState } from 'react';
 
 
@@ -19,27 +20,9 @@ const Profile = ({ userId }: { userId: string }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/api/users/${userId}`);
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setProfile(data.user); // Set the profile data
-        } else {
-          setError(data.message); // Show error message
-        }
-      } catch (err) {
-        setError('An error occurred while fetching the profile data.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
+    const userData = getUserById()
+  }
+);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

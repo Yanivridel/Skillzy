@@ -41,3 +41,4 @@ export const getSelf = async (token: string) => {
         throw error;
     }
 };
+
