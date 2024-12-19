@@ -65,7 +65,6 @@ export function AppSidebar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const userLogged = useSelector((state: RootState) => state.userLogged);
-    console.log(userLogged)
     const handleSignOut = () => {
         dispatch(unsetUser());
         navigate('/login');
