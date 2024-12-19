@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import LessonCard from "../components/TeacherCard/teacherCard"
-import { Lesson } from "@/types/lessonTypes";
+import { LatLng, Lesson } from "@/types/lessonTypes";
 import { getAllLessons } from "@/utils/lessonApi";
 import CheckpointMap from "@/components/Map/CheckpointMap";
 import Filter from "@/components/Filter/filter";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface ISearchParams {
   subject: string;
@@ -13,21 +15,17 @@ interface ISearchParams {
   isGroup: boolean | null;
 }
 
-
-
 const Lessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const userLogged = useSelector((state: RootState) => state.userLogged);
+  const center = { 
+    lat: userLogged.isLogged ? userLogged.coordinates[0] : 32.109333,
+    lng: userLogged.isLogged ? userLogged.coordinates[1] : 34.855499
+  };
 
-  const [subject , setSubject] = useState("")
-  const [title , setTitle] = useState("")
-  const [maxPrice , setMaxPrice] = useState(1000)
-  const [isGroup , setIsGroup] = useState("all")
-  const [level , setLevel] = useState("all")
-  const [day , setDay] = useState("all")
-  const [hours , setHours] = useState([0,24])
-  
   const filteredLessons = lessons.filter((lesson) => {
     const subject = searchParams.get("subject");
     const title = searchParams.get("title") as string;
@@ -83,6 +81,16 @@ const Lessons = () => {
     );
   });
 
+  const markers = filteredLessons.map(lesson => {
+    return { 
+      lat: lesson.teacher?.coordinates.length > 0 ? lesson.teacher.coordinates[0] : 0,
+      lng: lesson.teacher?.coordinates.length > 0 ? lesson.teacher.coordinates[1] : 0,
+      info: lesson.teacher?.fName + " " + lesson.teacher?.lName,
+      onClick: () => navigate(`/TeacherProfile/${lesson.teacher._id}`)
+    }
+  })
+  console.log("markers", markers)
+
   useEffect(() => {
     getLessons();
   }, [])
@@ -110,7 +118,7 @@ const Lessons = () => {
       <div className="flex">
       <div>
         <div className="border w-[85%] h-[5%]">
-          {/* <CheckpointMap /> */}
+          <CheckpointMap center={center} markers={markers}/>
         </div>
         <div className="w-[85%]">
           {filteredLessons.map(lesson => <LessonCard lesson={lesson}/>)}
