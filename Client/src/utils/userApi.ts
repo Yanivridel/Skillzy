@@ -71,3 +71,12 @@ export const editProfile = async (user : User ) => {
     }
 }
 
+export const getReviewsByTeacher = async (teacherId: string) => {
+    try {
+        const { data } = await axios.get(`${API_URL}/api/reviews/${teacherId}`);
+        return data;
+    } catch (error) {
+        console.error('Auth check error:', error);
+        throw error;
+    }
+};

@@ -1,11 +1,15 @@
 import { User } from "@/types/userTypes";
-import { getUserById } from "@/utils/userApi";
+import { getReviewsByTeacher, getUserById } from "@/utils/userApi";
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaStar, FaRegStar, FaUserAlt } from 'react-icons/fa'; // הוספנו אייקון של משתמש
 import { useParams } from "react-router-dom";
+import { Review } from "./TeacherReview";
+
 
 export default function TeacherProfile() {
+
     const [teacher, setTeacher] = useState<User | null>(null);
+    const [reviews, setReviews] = useState<Review | null>(null);
     const [rating, setRating] = useState<number>(0); // הוספנו סטייט עבור הדירוג
     const { id } = useParams();
 
@@ -15,27 +19,30 @@ export default function TeacherProfile() {
         setTeacher(user);
     }
 
+    async function getReviews() {
+        const { reviews } = await getReviewsByTeacher(id as string);
+        console.log(reviews);
+        setReviews(reviews);
+    }
     useEffect(() => {
         getTeacher();
+        getReviews();
     }, []);
-
     const handleRating = (ratingValue: number) => {
         setRating(ratingValue); // עדכון הדירוג שנבחר
         console.log(`You rated this teacher: ${ratingValue} stars`); // מדפיס את הדירוג שנבחר
         // ניתן לשלוח את הדירוג למערכת או לשמור אותו כאן
     };
-
     return (
         <div className="thin-font bg-[var(--background)] w-full h-screen flex justify-center items-center">
             {/* Teacher Profile Card */}
-            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-[90%] md:max-w-[600px] space-y-6">
+            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-full max-w-4xl mx-auto space-y-6">
                 <div className="text-center">
                     <h2 className="bubble-font text-2xl">Teacher Profile</h2>
                 </div>
-
                 {/* Teacher Info Section */}
                 <div className="flex flex-col md:flex-row gap-6">
-                    <div className="w-full md:w-[30%]">
+                    <div className="w-full md:w-1/3">
                         {/* תמונה של המורה או תמונה חלופית */}
                         <img
                             src={teacher?.userImage || "https://via.placeholder.com/150"} // אם אין תמונה, הצג תמונה ברירת מחדל
@@ -43,20 +50,17 @@ export default function TeacherProfile() {
                             className="w-full h-80 object-cover rounded-lg"
                         />
                     </div>
-
-                    <div className="w-full md:w-[70%] space-y-4">
+                    <div className="w-full md:w-2/3 space-y-4">
                         <div className="bg-white p-4 rounded-lg shadow-md">
                             <p className="text-xl font-semibold">Name: <span className="text-base">{teacher?.fName}</span></p>
                             <p className="text-xl font-semibold">Email: <span className="text-base">{teacher?.email}</span></p>
                             <p className="text-xl font-semibold">Phone: <span className="text-base">{teacher?.phone}</span></p>
                         </div>
-
                         <div className="bg-white p-4 rounded-lg shadow-md">
                             <button className="flex items-center gap-2 bg-[var(--button-bg)] text-white py-2 px-4 rounded-lg hover:bg-blue-500">
                                 <FaEnvelope /> Send Message
                             </button>
                         </div>
-
                         <div className="bg-white p-4 rounded-lg shadow-md">
                             <p className="text-xl font-semibold">Location: <span className="text-base">{teacher?.location}</span></p>
                             <button className="w-full bg-gray-200 p-2 rounded-lg mt-4">Privacy</button>
@@ -64,7 +68,6 @@ export default function TeacherProfile() {
                                 <p>120 Million Students</p>
                             </div>
                         </div>
-
                         {/* Rating Section */}
                         <div className="bg-white p-4 rounded-lg shadow-md space-y-2">
                             <p className="text-xl font-semibold">Rate this Teacher:</p>
@@ -87,7 +90,6 @@ export default function TeacherProfile() {
                         </div>
                     </div>
                 </div>
-
                 {/* Comments Section */}
                 <div className="flex border-t pt-6 gap-6">
                     <div className="w-[35%] bg-white p-6 rounded-lg shadow-md">
@@ -98,12 +100,14 @@ export default function TeacherProfile() {
                             <p className="text-xs text-gray-400">New York</p>
                         </div>
                     </div>
-
                     <div className="w-[65%] bg-slate-100 p-6 rounded-lg">
                         <video width="100%" controls>
                             <source src={teacher?.video} type="video/mp4" />
                             <p>Your browser does not support the video tag.</p>
                         </video>
+                    </div>
+                    <div>
+                        {}
                     </div>
                 </div>
             </div>
