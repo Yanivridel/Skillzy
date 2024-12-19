@@ -28,14 +28,14 @@ export default function TeacherProfile() {
     return (
         <div className="thin-font bg-[var(--background)] w-full h-screen flex justify-center items-center">
             {/* Teacher Profile Card */}
-            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-[90%] md:max-w-[600px] space-y-6">
+            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-full max-w-4xl mx-auto space-y-6">
                 <div className="text-center">
                     <h2 className="bubble-font text-2xl">Teacher Profile</h2>
                 </div>
 
                 {/* Teacher Info Section */}
                 <div className="flex flex-col md:flex-row gap-6">
-                    <div className="w-full md:w-[30%]">
+                    <div className="w-full md:w-1/3">
                         {/* תמונה של המורה או תמונה חלופית */}
                         <img
                             src={teacher?.userImage || "https://via.placeholder.com/150"} // אם אין תמונה, הצג תמונה ברירת מחדל
@@ -44,7 +44,7 @@ export default function TeacherProfile() {
                         />
                     </div>
 
-                    <div className="w-full md:w-[70%] space-y-4">
+                    <div className="w-full md:w-2/3 space-y-4">
                         <div className="bg-white p-4 rounded-lg shadow-md">
                             <p className="text-xl font-semibold">Name: <span className="text-base">{teacher?.fName}</span></p>
                             <p className="text-xl font-semibold">Email: <span className="text-base">{teacher?.email}</span></p>
