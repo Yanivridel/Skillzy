@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import defultImg from "./../assets/images/anonymous-user.png";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/store/slices/userSlices";
+import LessonCard from "@/components/TeacherCard/teacherCard";
 
 interface ProfileData {
   fName: string;
@@ -161,7 +162,7 @@ const Profile = () => {
           <ul className="list-disc pl-6">
             {profile?.myTeachers?.length > 0 ? (
               profile.myTeachers.map((teacher, index) => (
-                <li key={index}>{teacher}</li>
+                <li key={index}>{teacher._id}</li>
               ))
             ) : (
               <li>No saved teachers</li>
@@ -174,7 +175,7 @@ const Profile = () => {
           <ul className="list-disc pl-6">
             {profile?.schedule?.length > 0 ? (
               profile.schedule.map((lesson, index) => (
-                <li key={index}>{lesson}</li>
+                <li key={index}><LessonCard lesson={lesson} profile={true}/></li>
               ))
             ) : (
               <li>No lessons scheduled</li>

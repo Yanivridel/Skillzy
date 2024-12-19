@@ -116,7 +116,7 @@ const Lessons = () => {
         <p>No Lessons Available... </p>
         :
         filteredLessons.map((lesson, index) => (
-        <LessonCard key={lesson._id.toString() + index} lesson={lesson} />
+        <LessonCard key={lesson._id.toString() + index} lesson={lesson} profile={false} />
         ))}
 
         </div>
