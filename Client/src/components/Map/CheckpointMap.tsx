@@ -67,7 +67,7 @@ function useGoogleMap({center, markers} : MapProps) {
                     infoWindow.addListener("domready", () => {
                     const infoWindowContent = document.getElementById("infoWindowContent");
                     if (infoWindowContent) {
-                        infoWindowContent.addEventListener("click", position.onClick);
+                        infoWindowContent.addEventListener("click", position.onClick as any);
                     }
                     });
                 });
