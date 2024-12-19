@@ -15,6 +15,7 @@ export default function Filter() {
   const [price, setPrice] = useState<number>(50); 
   const [rating, setRating] = useState<number>(5); 
 
+
   const changeParams = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
     sub: string
@@ -79,14 +80,14 @@ export default function Filter() {
         <p>Times:</p>
         <div className='border-b'>
           <div className=' grid grid-cols-3 gap-1'>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="9-12" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ... "><CiCloudSun />9-12</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="12-15" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiDaySunny />12-15</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="15-18" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHorizonAlt />15-18</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="18-21" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHot />18-21</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="21-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHail />21-24</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="0-3" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltSleet />0-3</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="3-6" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltCloudy />3-6</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="all" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><CiCloudSun />all hours</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="9-12" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ... "><CiCloudSun />9-12</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="12-15" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiDaySunny />12-15</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="15-18" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHorizonAlt />15-18</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="18-21" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHot />18-21</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="21-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHail />21-24</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="0-3" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltSleet />0-3</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="3-6" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltCloudy />3-6</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="0-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><CiCloudSun />all hours</button>
           </div>
         </div>
         <div className='  p-5 border-b'>
@@ -126,14 +127,14 @@ export default function Filter() {
         </div>
         <div className='grid justify-items-center p-5 border-b'>By Date:
           <div className=''>
-          <select onChange={(e) => changeParams(e, "date")}>
-            <option value="ss">Sunday</option>
-            <option value="mo">Monday</option>
-            <option value="tu">Tuesday</option>
-            <option value="we">Wednesday</option>
-            <option value="th">Thursday</option>
-            <option value="fr">Friday</option>
-            <option value="sa">Saturday</option>
+          <select onChange={(e) => changeParams(e, "day")}>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
           </select>
           </div>
         </div>
@@ -149,7 +150,7 @@ export default function Filter() {
         </div>
         <div className='grid justify-items-center p-5 border-b'> Group
           <div>
-          <select onChange={(e) => changeParams(e, "group")}>
+          <select onChange={(e) => changeParams(e, "isGroup")}>
             <option value="Solo">All</option>
             <option value="Solo">Solo</option>
             <option value="Group">Group</option>
@@ -157,7 +158,7 @@ export default function Filter() {
           </div>
         </div>
         <div className='grid justify-items-center  p-5'>
-          <button onClick={() => console.log(searchParams.toString())} className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Apply</button>
+          <button onClick={() => console.log(searchParams.toString())} className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Reset Filters</button>
         </div>
 
       </div>
