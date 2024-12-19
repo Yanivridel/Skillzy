@@ -14,3 +14,9 @@ export interface Lesson {
     level: string;
     price: number;
 }
+
+export interface LatLng {
+    lat: number;
+    lng: number;
+    info?: string;
+}

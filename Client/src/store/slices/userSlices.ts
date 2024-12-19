@@ -13,6 +13,7 @@ interface UserState {
     phone: string;
     role: string;
     coins: number;
+    coordinates: number[];
     myTeachers: Types.ObjectId[];
     schedule: Types.ObjectId[];
     tradeable: boolean;
@@ -24,6 +25,7 @@ interface SetUserPayload {
     lName: string;
     email: string;
     userImage: string;
+    coordinates: number[];
     phone: string;
     role: string;
     coins: number;
@@ -49,6 +51,7 @@ const initialState: UserState = {
     phone: "",
     role: "",
     coins: 0,
+    coordinates: [],
     myTeachers: [],
     schedule: [],
     tradeable: false
@@ -59,7 +62,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<SetUserPayload>) => {
-            const { fName, lName, email, userImage, phone, role, coins, tradeable, schedule, myTeachers, _id } = action.payload;
+            const { fName, lName, email, userImage, phone, role, coins, coordinates, tradeable, schedule, myTeachers, _id } = action.payload;
         
             if (fName && email && lName && phone && role && schedule && myTeachers) {
                 state._id = _id;
@@ -70,6 +73,7 @@ const userSlice = createSlice({
                 state.myTeachers = myTeachers;
                 state.schedule = schedule;
                 state.phone = phone;
+                state.coordinates = coordinates;
                 state.role = role;
                 state.coins = coins;
                 state.tradeable = tradeable;
@@ -88,6 +92,7 @@ const userSlice = createSlice({
             state.phone= "",
             state.role= "",
             state.coins= 0,
+            state.coordinates = [];
             state.myTeachers= [],
             state.schedule= [],
             state.tradeable= false
