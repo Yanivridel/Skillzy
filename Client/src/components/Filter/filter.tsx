@@ -38,6 +38,17 @@ export default function Filter() {
     }
   };
 
+  function handleResetParams() {
+    searchParams.set("title", "");
+    searchParams.set("subject", "all");
+    searchParams.set("price", "1000");
+    searchParams.set("isGroup", "all");
+    searchParams.set("level", "all");
+    searchParams.set("day", "all");
+    searchParams.set("hour", [0, 24].join("-"));
+    setSearchParams(searchParams);
+  }
+
   return (
     <div className="relative">
       {/* כפתור הפילטר עבור מכשירים ניידים */}
@@ -174,7 +185,7 @@ export default function Filter() {
           </div>
         </div>
         <div className='grid justify-items-center  p-5'>
-          <button onClick={() => console.log(searchParams.toString())} className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Reset Filters</button>
+          <button onClick={() => handleResetParams} className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Reset Filters</button>
         </div>
       </div>
     </div>
