@@ -1,134 +1,112 @@
+import { User } from "@/types/userTypes";
 import { getUserById } from "@/utils/userApi";
 import { useEffect, useState } from "react";
-import { FaMessage } from "react-icons/fa6";
-
+import { FaEnvelope, FaStar, FaRegStar, FaUserAlt } from 'react-icons/fa'; // הוספנו אייקון של משתמש
+import { useParams } from "react-router-dom";
 
 export default function TeacherProfile() {
-    
+    const [teacher, setTeacher] = useState<User | null>(null);
+    const [rating, setRating] = useState<number>(0); // הוספנו סטייט עבור הדירוג
+    const { id } = useParams();
+
+    async function getTeacher() {
+        const { user } = await getUserById(id as string);
+        console.log(user);
+        setTeacher(user);
+    }
+
     useEffect(() => {
-    })
+        getTeacher();
+    }, []);
 
-  return (
-    <div className='border h-[130vh] w-screen'>
-        <div className='border-b h-[50%]'>
-            <div className='flex items-center border-b h-[15%]'>
-                <div className='border w-[20%]'>logo</div>
-                <div className='border w-[30%]'>search</div>
-                <div className='border w-[30%]'>links links links</div>
-                <div className='border w-[20%]'>profilePhoto</div>
-            </div>
-            <div className='flex border-b h-[75%]'>
-                <div className='border w-[30%] h-[100%]'>Teacher Photo</div>
-                <div className='border w-[70%] h-[100%]'>
-                    <div className='border  h-[50%]'>
-                        <div className='border'>
-                            <p className='text-xl font-bold'>Name:  <span className='text-base	'>Yaniv </span></p>
-                            <p className='text-xl font-bold'>Email: <span className='text-base	'>YanivRidel123@gmail.com</span></p>
-                            <p className='text-xl font-bold'>Phone: <span className='text-base	'>0543232323</span></p>
-                        </div>
-                        <div>
-                        
-                        </div>
-                    </div>
-                    <div className='border h-[50%]'>
-                        <p className='flex items-center gap-[10px] border text-sm'><FaMessage /> Send Message</p>
-                    </div>
-                </div>
-            </div>
+    const handleRating = (ratingValue: number) => {
+        setRating(ratingValue); // עדכון הדירוג שנבחר
+        console.log(`You rated this teacher: ${ratingValue} stars`); // מדפיס את הדירוג שנבחר
+        // ניתן לשלוח את הדירוג למערכת או לשמור אותו כאן
+    };
 
-        </div>
-        <div className='flex border-b h-[50%]'>
-            <div className='border w-[35%] h-[100%]'>
-                <div className='border h-[20%]'>
-                    <div className=''>Spotify New York</div>
-                    <button className='border bg-slate-200 p-1 rounded-[10px]'>Privacy</button>
-                    <p className='text-slate-200 text-xs' >120 Million Students</p>
-                    <p className='text-slate-200 text-xs' >New York</p>
+    return (
+        <div className="thin-font bg-[var(--background)] w-full h-screen flex justify-center items-center">
+            {/* Teacher Profile Card */}
+            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-[90%] md:max-w-[600px] space-y-6">
+                <div className="text-center">
+                    <h2 className="bubble-font text-2xl">Teacher Profile</h2>
                 </div>
-                <div className='border h-[80%]'>
-                    <div className="border-b flex justify-around items-center">
-                        <div className="">logo</div>
-                        <input placeholder="Add Comment"></input>
-                        <button className="p-2 w-[20%] rounded-full bg-slate-200	">Post</button>
+
+                {/* Teacher Info Section */}
+                <div className="flex flex-col md:flex-row gap-6">
+                    <div className="w-full md:w-[30%]">
+                        {/* תמונה של המורה או תמונה חלופית */}
+                        <img
+                            src={teacher?.userImage || "https://via.placeholder.com/150"} // אם אין תמונה, הצג תמונה ברירת מחדל
+                            alt="Teacher"
+                            className="w-full h-80 object-cover rounded-lg"
+                        />
                     </div>
-                    <div className="border h-[85%]">
-                        <div className="border flex">
-                            <div className="border rounded-full p-4">logo</div>
-                            <div className="grid border w-[70%]  items-center">
-                                <span>Matt Dible</span>
-                                <span className="text-slate-200 text-xs">One Minute ago</span>
-                                <span className="w-[70%]">The Comments sdsdsdsdsdd</span>
+
+                    <div className="w-full md:w-[70%] space-y-4">
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <p className="text-xl font-semibold">Name: <span className="text-base">{teacher?.fName}</span></p>
+                            <p className="text-xl font-semibold">Email: <span className="text-base">{teacher?.email}</span></p>
+                            <p className="text-xl font-semibold">Phone: <span className="text-base">{teacher?.phone}</span></p>
+                        </div>
+
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <button className="flex items-center gap-2 bg-[var(--button-bg)] text-white py-2 px-4 rounded-lg hover:bg-blue-500">
+                                <FaEnvelope /> Send Message
+                            </button>
+                        </div>
+
+                        <div className="bg-white p-4 rounded-lg shadow-md">
+                            <p className="text-xl font-semibold">Location: <span className="text-base">{teacher?.location}</span></p>
+                            <button className="w-full bg-gray-200 p-2 rounded-lg mt-4">Privacy</button>
+                            <div className="text-xs text-gray-400 mt-4">
+                                <p>120 Million Students</p>
                             </div>
                         </div>
-                        
+
+                        {/* Rating Section */}
+                        <div className="bg-white p-4 rounded-lg shadow-md space-y-2">
+                            <p className="text-xl font-semibold">Rate this Teacher:</p>
+                            <div className="flex gap-2">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <div
+                                        key={star}
+                                        onClick={() => handleRating(star)}
+                                        className="cursor-pointer"
+                                    >
+                                        {rating >= star ? (
+                                            <FaStar className="text-yellow-500" />
+                                        ) : (
+                                            <FaRegStar className="text-yellow-500" />
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-center mt-2">{rating} Star{rating !== 1 ? "s" : ""}</p> {/* מציג את הדירוג שנבחר */}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Comments Section */}
+                <div className="flex border-t pt-6 gap-6">
+                    <div className="w-[35%] bg-white p-6 rounded-lg shadow-md">
+                        <div className="space-y-2">
+                            <p>{teacher?.location}</p>
+                            <button className="bg-gray-200 p-2 rounded-lg w-full">Privacy</button>
+                            <p className="text-xs text-gray-400">120 Million Students</p>
+                            <p className="text-xs text-gray-400">New York</p>
+                        </div>
+                    </div>
+
+                    <div className="w-[65%] bg-slate-100 p-6 rounded-lg">
+                        <video width="100%" controls>
+                            <source src={teacher?.video} type="video/mp4" />
+                            <p>Your browser does not support the video tag.</p>
+                        </video>
                     </div>
                 </div>
             </div>
-            <div className='border w-[65%] h-[100%]'>Video</div>
         </div>
-    </div>
-
-  )
+    );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import ReactStars from 'react-rating-stars-component';
-
-// const StarRating = ({ rating, onRatingChange }: { rating: number, onRatingChange: (rating: number) => void }) => {
-//   return (
-//     <div>
-//       <ReactStars
-//         count={5} // מספר הכוכבים המקסימלי (5 כוכבים כאן)
-//         value={rating} // הדירוג שהמשתמש בחר
-//         size={24} // גודל הכוכבים
-//         activeColor="#ffd700" // צבע הכוכבים המלאים
-//         isHalf={true} // אם אתה רוצה לאפשר דירוג חצי-כוכב
-//         onChange={onRatingChange} // שליחה של הדירוג החדש כשמשתנה
-//       />
-//         <p>Selected Rating: {rating} stars</p> {/* הצגת הדירוג שנבחר */}
-//     </div>
-//   );
-// };
-
-// const TeacherProfile = () => {
-//   const [rating, setRating] = useState(0); // שמירה על הדירוג שנבחר
-
-//   const handleRatingChange = (newRating: number) => {
-//     setRating(newRating); // עדכון הערך שנבחר
-//     console.log('New Rating:', newRating); // אפשר לשלוח את הדירוג לאנשהו
-//     // כאן אפשר לשלוח את הדירוג לפונקציה אחרת או לשרת
-//   };
-
-//   return (
-//     <div className="border h-[100vh] w-screen">
-//       <div className="border-b h-[15%]">
-//         <h2>Teacher Profile</h2>
-//         <StarRating rating={rating} onRatingChange={handleRatingChange} />
-//       </div>
-//       <div className="border-b h-[65%]"></div>
-//       <div className="border-t h-[15%]">
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TeacherProfile;
