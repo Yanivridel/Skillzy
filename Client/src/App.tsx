@@ -16,6 +16,7 @@ import Lessons from "./Pages/Lessons";
 import Profile from "./Pages/Profile";
 import logoLight from "./assets/logo/light.png"
 import logoDark from "./assets/logo/dark.png"
+import TeacherProfile from "./components/TeacherProfile/TeacherProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function App() {
         {/* <Route path="/about" element={<About />} /> */}
         {/* <Route path="/contact" element={<Contact />} /> */}
         <Route path="/lessons" element={<Lessons />} />
-        <Route path="/teacherProfile/:id" element={<TeacherProfilePage />} />
+        <Route path="/teacherProfile/:id" element={<TeacherProfile />} />
         <Route path="/filter" element={<Filter />} />
 
         <Route path="/login" element={<LogIn />} />
