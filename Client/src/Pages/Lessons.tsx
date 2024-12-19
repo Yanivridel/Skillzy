@@ -4,7 +4,7 @@ import LessonCard from "../components/TeacherCard/teacherCard"
 import { Lesson } from "@/types/lessonTypes";
 import { getAllLessons } from "@/utils/lessonApi";
 import CheckpointMap from "@/components/Map/CheckpointMap";
-import Filter from "@/components/Filter/filter";
+import Filter from "./../components/Filter/filter";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -15,12 +15,6 @@ interface ISearchParams {
   price: number;
   isGroup: boolean | null;
 }
-
-
-
-
-
-
 
 const Lessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -40,7 +34,7 @@ const Lessons = () => {
     const level = searchParams.get("level") as string;
     const day = searchParams.get("day");
     const hourParam = searchParams.get("hour");
-    const hours = hourParam ? hourParam.split(",").map(Number) : null;
+    const hours = hourParam ? hourParam.split("-").map(Number) : null;
 
     const isSubjectMatch =
       !subject || subject === "all" || lesson.subject.toLowerCase() === subject.toLowerCase();
@@ -65,7 +59,7 @@ const Lessons = () => {
 
     const isHourMatch =
       !hours ||
-      (lessonDate.getHours() >= hours[0] && lessonDate.getHours() <= hours[1]);
+      (lessonDate.getHours() >= hours[0] && lessonDate.getHours() < hours[1]);
 
     return (
       isSubjectMatch &&
@@ -86,7 +80,6 @@ const Lessons = () => {
       onClick: () => navigate(`/TeacherProfile/${lesson.teacher._id}`)
     }
   })
-  console.log("markers", markers)
 
   useEffect(() => {
     getLessons();
@@ -99,7 +92,7 @@ const Lessons = () => {
     if (!searchParams.get("isGroup")) searchParams.set("isGroup", "all");
     if (!searchParams.get("level")) searchParams.set("level", "all");
     if (!searchParams.get("day")) searchParams.set("day", "all");
-    if (!searchParams.get("hour")) searchParams.set("hour", [0, 24].join(","));
+    if (!searchParams.get("hour")) searchParams.set("hour", [0, 24].join("-"));
     setSearchParams(searchParams);
   }, [searchParams]);
 
@@ -109,7 +102,7 @@ const Lessons = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-4">
+    <div className="flex flex-col w-full lg:flex-row gap-6 p-4">
       {/* Main content area */}
       <div className="flex-1 lg:w-[70%] mb-6 lg:mb-0">
         <CheckpointMap center={center} markers={markers}/>
@@ -119,8 +112,11 @@ const Lessons = () => {
 
         {/* Display lessons */}
         <div className="grid grid-cols-1  gap-6">
-        {filteredLessons.map((lesson, index) => (
-        <LessonCard key={lesson.id || index} lesson={lesson} />
+        {filteredLessons.length === 0 ?
+        <p>No Lessons Available... </p>
+        :
+        filteredLessons.map((lesson, index) => (
+        <LessonCard key={lesson._id.toString() + index} lesson={lesson} />
         ))}
 
         </div>
