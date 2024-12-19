@@ -1,7 +1,7 @@
-<<<<<<< HEAD
+
 import { useEffect, useState } from "react"
 import LessonCard from "../components/TeacherCard/teacherCard"
-import { LatLng, Lesson } from "@/types/lessonTypes";
+import { Lesson } from "@/types/lessonTypes";
 import { getAllLessons } from "@/utils/lessonApi";
 import CheckpointMap from "@/components/Map/CheckpointMap";
 import Filter from "@/components/Filter/filter";
@@ -15,14 +15,12 @@ interface ISearchParams {
   price: number;
   isGroup: boolean | null;
 }
-=======
-import { useEffect, useState } from "react";
-import LessonCard from "../components/TeacherCard/teacherCard";
-import { Lesson } from "@/types/lessonTypes";
-import { getAllLessons } from "@/utils/lessonApi";
-import { useSearchParams } from "react-router-dom";
-import Filter from "@/components/Filter/filter";
->>>>>>> tal
+
+
+
+
+
+
 
 const Lessons = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);

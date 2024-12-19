@@ -60,7 +60,7 @@ const Profile = () => {
   const handleSaveClick = async () => {
     if (editedProfile) {
       try {
-        const { user } = await editProfile(editedProfile);
+        const { user } = await editProfile(editedProfile as any);
         setProfile(user);
         dispatch(setUser(user));
         setIsEditing(false);
