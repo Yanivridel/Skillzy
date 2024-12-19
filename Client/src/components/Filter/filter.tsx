@@ -1,322 +1,185 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { CiCloudSun } from "react-icons/ci";
-import { WiHot } from "react-icons/wi";
-import { WiHorizonAlt } from "react-icons/wi";
-import { WiNightAltSleet } from "react-icons/wi";
-import { WiDaySunny } from "react-icons/wi";
-import { WiHail } from "react-icons/wi";
-import { WiNightAltCloudy } from "react-icons/wi";
-import { Slider } from "@/components/ui/slider"
-import { Input } from "@/components/ui/input"
-import { useSearchParams } from 'react-router-dom';
+import {
+  WiHot,
+  WiHorizonAlt,
+  WiNightAltSleet,
+  WiDaySunny,
+  WiHail,
+  WiNightAltCloudy,
+} from "react-icons/wi";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { useSearchParams } from "react-router-dom";
 
 export default function Filter() {
+  const [isFilterVisible, setIsFilterVisible] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [price, setPrice] = useState<number>(50); 
-  const [rating, setRating] = useState<number>(5); 
+  const [rating, setRating] = useState<number>(5);
+  const [price, setPrice] = useState<number>(50);
+
+  const toggleFilterVisibility = () => setIsFilterVisible(!isFilterVisible);
 
   const changeParams = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e:
+      | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
     sub: string
   ) => {
     let value: string | null = null;
-  
-    
-    if (e.target instanceof HTMLSelectElement || e.target instanceof HTMLInputElement) {
-      value = e.target.value; 
+
+    if (
+      e.target instanceof HTMLSelectElement ||
+      e.target instanceof HTMLInputElement
+    ) {
+      value = e.target.value;
     } else if (e.target instanceof HTMLButtonElement) {
-      value = e.target.getAttribute("data-value"); 
+      value = e.target.getAttribute("data-value");
     }
-  
+
     if (value !== null) {
       searchParams.set(sub, value);
       setSearchParams(searchParams);
     }
   };
 
+  function handleResetParams() {
+    searchParams.set("title", "");
+    searchParams.set("subject", "all");
+    searchParams.set("price", "1000");
+    searchParams.set("isGroup", "all");
+    searchParams.set("level", "all");
+    searchParams.set("day", "all");
+    searchParams.set("hour", [0, 24].join("-"));
+    setSearchParams(searchParams);
+  }
 
   return (
-    <div className='fixed top-0 right-0 w-[300px] h-[100vh] bg-white shadow-lg overflow-y-auto p-4 rounded-lg'>
-      <div className=' '>
-        <div className='border-b grid justify-center justify-items-center	p-5'>Leaderboard <Input onChange={(e)=> changeParams(e, "title")}/></div>
-        <div className='grid justify-center justify-items-center border-b p-5'>Choose Subject
-          <select value={searchParams.get("subject") || "all"} onChange={(e)=> changeParams(e, "subject") } className='p-4 rounded-[25px]  border'>
-            <option value="all">All subject</option>
+    <div className="relative">
+      {/* Mobile Filter Button */}
+      <button
+        className="fixed top-4 right-4 p-3 bg-gray-600 text-white rounded-full z-50 text-sm md:hidden shadow-lg hover:bg-gray-700"
+        onClick={toggleFilterVisibility}
+      >
+        {isFilterVisible ? "Hide" : "Show"} Filter
+      </button>
+
+      {/* Filter Sidebar */}
+      <div
+        className={`fixed top-0 right-0 w-[300px] h-[100vh] bg-gray-100 text-gray-800 shadow-lg overflow-y-auto p-6 rounded-l-lg transition-transform z-40 md:block ${
+          isFilterVisible ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Filters</h2>
+
+        {/* Search by Title */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-2">Search</label>
+          <Input
+            placeholder="Search lessons"
+            className="w-full bg-white text-gray-800 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-gray-500"
+            onChange={(e) => changeParams(e, "title")}
+          />
+        </div>
+
+        {/* Subject Selector */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-2">
+            Choose Subject
+          </label>
+          <select
+            value={searchParams.get("subject")?.toLowerCase() || "all"}
+            onChange={(e) => changeParams(e, "subject")}
+            className="w-full bg-white text-gray-800 border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-gray-500"
+          >
+            <option value="all">All Subjects</option>
             <option value="mathematics">Mathematics</option>
             <option value="science">Science</option>
-            <option value="computer science">Computer Science</option>
+            <option value="computer-science">Computer Science</option>
             <option value="engineering">Engineering</option>
-            <option value="history">History</option>
-            <option value="geography">Geography</option>
-            <option value="languages">Languages</option>
-            <option value="literature">Literature</option>
-            <option value="arts">Arts</option>
-            <option value="music">Music</option>
-            <option value="physical education">Physical Education</option>
-            <option value="health wellness">Health and Wellness</option>
-            <option value="business">Business</option>
-            <option value="economics">Economics</option>
-            <option value="finance">Finance</option>
-            <option value="law">Law</option>
-            <option value="political-science">Political Science</option>
-            <option value="philosophy">Philosophy</option>
-            <option value="psychology">Psychology</option>
-            <option value="sociology">Sociology</option>
-            <option value="anthropology">Anthropology</option>
-            <option value="environmental-studies">Environmental Studies</option>
-            <option value="religious-studies">Religious Studies</option>
-            <option value="vocational-skills">Vocational Skills</option>
-            <option value="technology">Technology</option>
-            <option value="media-studies">Media Studies</option>
-            <option value="communication">Communication</option>
-            <option value="public-speaking">Public Speaking</option>
-            <option value="creative-writing">Creative Writing</option>
-            <option value="architecture">Architecture</option>
+            {/* Add other options here */}
           </select>
-        </div>
-      </div>
-      <div className='  p-5 '>
-        <p>Times:</p>
-        <div className='border-b'>
-          <div className=' grid grid-cols-3 gap-1'>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="9-12" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ... "><CiCloudSun />9-12</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="12-15" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiDaySunny />12-15</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="15-18" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHorizonAlt />15-18</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="18-21" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHot />18-21</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="21-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHail />21-24</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="0-3" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltSleet />0-3</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="3-6" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltCloudy />3-6</button>
-            <button onClick={(e)=> changeParams(e, "times")} data-value="all" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><CiCloudSun />all hours</button>
-          </div>
-        </div>
-        <div className='  p-5 border-b'>
-        <div className='h-[50px] text-xl'>Price per lesson: <span>{price}</span></div>
-        <Slider
-  className='h-[50px] w-[200px]'
-  defaultValue={[50]}
-  max={1000}
-  min={50}
-  step={50}
-  onValueChange={(value) => {
-    setPrice(value[0]); // עדכון המחיר ב-state
-    setSearchParams((prev) => {
-      prev.set("price", value[0].toString());
-      return prev;
-    });
-  }}
-/>
-        </div>
-        <div className='grid justify-center justify-items-center border-b'>
-          <div className='p-10'>By rating: <span>{rating}</span></div>
-          <div>
-          <Slider
-  className='h-[50px] w-[250px]'
-  defaultValue={[33]}
-  max={5}
-  step={1}
-  onValueChange={(value) => {
-    setRating(value[0]); // עדכון הדירוג ב-state
-    setSearchParams((prev) => {
-      prev.set("rating", value[0].toString());
-      return prev;
-    });
-  }}
-/>
-          </div>
-        </div>
-        <div className='grid justify-items-center p-5 border-b'>By Date:
-          <div className=''>
-          <select onChange={(e) => changeParams(e, "date")}>
-            <option value="ss">Sunday</option>
-            <option value="mo">Monday</option>
-            <option value="tu">Tuesday</option>
-            <option value="we">Wednesday</option>
-            <option value="th">Thursday</option>
-            <option value="fr">Friday</option>
-            <option value="sa">Saturday</option>
-          </select>
-          </div>
-        </div>
-        <div className='grid justify-items-center p-5 border-b'>By Level:
-          <div>
-          <select onChange={(e) => changeParams(e, "level")}>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-            <option value="Expert">Expert</option>
-          </select>
-          </div>
-        </div>
-        <div className='grid justify-items-center p-5 border-b'> Group
-          <div>
-          <select onChange={(e) => changeParams(e, "group")}>
-            <option value="Solo">All</option>
-            <option value="Solo">Solo</option>
-            <option value="Group">Group</option>
-          </select>
-          </div>
-        </div>
-        <div className='grid justify-items-center  p-5'>
-          <button onClick={() => console.log(searchParams.toString())} className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Apply</button>
         </div>
 
-      </div>
+        {/* Hour Filters */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-4">Times</label>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { time: "9-12", icon: <CiCloudSun /> },
+              { time: "12-15", icon: <WiDaySunny /> },
+              { time: "15-18", icon: <WiHorizonAlt /> },
+              { time: "18-21", icon: <WiHot /> },
+              { time: "21-24", icon: <WiHail /> },
+              { time: "0-3", icon: <WiNightAltSleet /> },
+              { time: "3-6", icon: <WiNightAltCloudy /> },
+              { time: "0-24", icon: <CiCloudSun /> },
+            ].map(({ time, icon }) => (
+              <button
+                key={time}
+                data-value={time}
+                onClick={(e) => changeParams(e, "hour")}
+                className="flex flex-col items-center justify-center p-3 bg-gray-200 text-gray-700 rounded-lg shadow hover:bg-gray-300 hover:text-black transition-all"
+              >
+                {icon}
+                <span className="text-sm">{time}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
+        {/* Price Slider */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-2">
+            Price per Lesson
+          </label>
+          <div className="flex items-center">
+            <span className="mr-4">${price}</span>
+            <Slider
+              className="flex-1"
+              defaultValue={[50]}
+              max={1000}
+              min={50}
+              step={50}
+              onValueChange={(value) => {
+                setPrice(value[0]);
+                searchParams.set("price", value[0].toString());
+                setSearchParams(searchParams);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Rating Slider */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold mb-2">By Rating</label>
+          <div className="flex items-center">
+            <span className="mr-4 ">{rating}</span>
+            <Slider
+              className="flex-1 "
+              defaultValue={[5]}
+              max={5}
+              min={1}
+              step={1}
+              onValueChange={(value) => {
+                setRating(value[0]);
+                searchParams.set("rating", value[0].toString());
+                setSearchParams(searchParams);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Reset Filters */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleResetParams}
+            className="bg-gray-600 text-white rounded-full px-6 py-2 hover:bg-gray-700 transition-all"
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import { CiCloudSun } from "react-icons/ci";
-// import { WiHot } from "react-icons/wi";
-// import { WiHorizonAlt } from "react-icons/wi";
-// import { WiNightAltSleet } from "react-icons/wi";
-// import { WiDaySunny } from "react-icons/wi";
-// import { WiHail } from "react-icons/wi";
-// import { WiNightAltCloudy } from "react-icons/wi";
-// import { Slider } from "@/components/ui/slider";
-// import { Input } from "@/components/ui/input";
-
-// export default function Filter() {
-//   return (
-//     <div className='p-2  w-[88%] h-[100vh] rounded-[25px] '>
-//       <div className=' '>
-//         <div className='border-b grid justify-center justify-items-center	p-5'>Leaderboard <Input /></div>
-//         <div className='grid justify-center justify-items-center border-b p-5'>Choose Subject
-//           <select className='p-4 rounded-[25px]  border'>
-//             <option value="mathematics">Mathematics</option>
-//             <option value="science">Science</option>
-//             <option value="computer-science">Computer Science</option>
-//             <option value="engineering">Engineering</option>
-//             <option value="history">History</option>
-//             <option value="geography">Geography</option>
-//             <option value="languages">Languages</option>
-//             <option value="literature">Literature</option>
-//             <option value="arts">Arts</option>
-//             <option value="music">Music</option>
-//             <option value="physical-education">Physical Education</option>
-//             <option value="health-wellness">Health and Wellness</option>
-//             <option value="business">Business</option>
-//             <option value="economics">Economics</option>
-//             <option value="finance">Finance</option>
-//             <option value="law">Law</option>
-//             <option value="political-science">Political Science</option>
-//             <option value="philosophy">Philosophy</option>
-//             <option value="psychology">Psychology</option>
-//             <option value="sociology">Sociology</option>
-//             <option value="anthropology">Anthropology</option>
-//             <option value="environmental-studies">Environmental Studies</option>
-//             <option value="religious-studies">Religious Studies</option>
-//             <option value="vocational-skills">Vocational Skills</option>
-//             <option value="technology">Technology</option>
-//             <option value="media-studies">Media Studies</option>
-//             <option value="communication">Communication</option>
-//             <option value="public-speaking">Public Speaking</option>
-//             <option value="creative-writing">Creative Writing</option>
-//             <option value="architecture">Architecture</option>
-//           </select>
-//         </div>
-//       </div>
-//       <div className='  p-5 '>
-//         <p>Times:</p>
-//         <div className='border-b'>
-//           <div className=' grid grid-cols-3 gap-1'>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ... "><CiCloudSun />9-12</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiDaySunny />12-15</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHorizonAlt />15-18</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHot />18-21</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHail />21-24</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltSleet />0-3</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltCloudy />3-6</button>
-//             <button className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><CiCloudSun />3-6</button>
-//           </div>
-//         </div>
-//         <div className='  p-5 border-b'>
-//           <div className='h-[50px] text-xl'>Price per lesson</div>
-//           <Slider className='h-[50px] w-[200px]' defaultValue={[33]} max={100} step={1} />
-//         </div>
-//         <div className='grid justify-center justify-items-center border-b'>
-//           <div className='p-10'>By rating:</div>
-//           <div>
-//             <Slider className='h-[50px] w-[250px]' defaultValue={[33]} max={100} step={1} />
-//           </div>
-//         </div>
-//         <div className='grid justify-items-center p-5 border-b'>By Date:
-//           <div className=''>
-//           <select>
-//             <option value="ss">Sunday</option>
-//             <option value="mo">Monday</option>
-//             <option value="tu">Tuesday</option>
-//             <option value="we">Wednesday</option>
-//             <option value="th">Thursday</option>
-//             <option value="fr">Friday</option>
-//             <option value="sa">Saturday</option>
-//           </select>
-//           </div>
-//         </div>
-//         <div className='grid justify-items-center p-5 border-b'>By Level:
-//           <div>
-//           <select>
-//             <option value="Beginner">Beginner</option>
-//             <option value="Intermediate">Intermediate</option>
-//             <option value="Advanced">Advanced</option>
-//             <option value="Expert">Expert</option>
-//           </select>
-//           </div>
-//         </div>
-//         <div className='grid justify-items-center p-5 border-b'> Group
-//           <div>
-//           <select>
-//             <option value="Solo">All</option>
-//             <option value="Solo">Solo</option>
-//             <option value="Group">Group</option>
-//           </select>
-//           </div>
-//         </div>
-//         <div className='grid justify-items-center  p-5'>
-//           <button className='p-3 border w-[120px] rounded-[25px] hover:bg-slate-400 ... '>Apply</button>
-//         </div>
-
-//       </div>
-
-//     </div>
-//   )
-// }

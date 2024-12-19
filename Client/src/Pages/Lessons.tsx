@@ -3,7 +3,7 @@ import LessonCard from "../components/TeacherCard/teacherCard";
 import { LatLng, Lesson } from "@/types/lessonTypes";
 import { getAllLessons } from "@/utils/lessonApi";
 import CheckpointMap from "@/components/Map/CheckpointMap";
-import Filter from "@/components/Filter/filter";
+import Filter from "./../components/Filter/filter";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -33,7 +33,7 @@ const Lessons = () => {
     const level = searchParams.get("level") as string;
     const day = searchParams.get("day");
     const hourParam = searchParams.get("hour");
-    const hours = hourParam ? hourParam.split(",").map(Number) : null;
+    const hours = hourParam ? hourParam.split("-").map(Number) : null;
 
     const isSubjectMatch =
       !subject ||
@@ -65,7 +65,7 @@ const Lessons = () => {
 
     const isHourMatch =
       !hours ||
-      (lessonDate.getHours() >= hours[0] && lessonDate.getHours() <= hours[1]);
+      (lessonDate.getHours() >= hours[0] && lessonDate.getHours() < hours[1]);
 
     return (
       isSubjectMatch &&
@@ -89,10 +89,10 @@ const Lessons = () => {
           ? lesson.teacher.coordinates[1]
           : 0,
       info: lesson.teacher?.fName + " " + lesson.teacher?.lName,
+
       onClick: () => navigate(`/TeacherProfile/${lesson.teacher._id}`),
     };
   });
-  console.log("markers", markers);
 
   useEffect(() => {
     getLessons();
@@ -105,7 +105,7 @@ const Lessons = () => {
     if (!searchParams.get("isGroup")) searchParams.set("isGroup", "all");
     if (!searchParams.get("level")) searchParams.set("level", "all");
     if (!searchParams.get("day")) searchParams.set("day", "all");
-    if (!searchParams.get("hour")) searchParams.set("hour", [0, 24].join(","));
+    if (!searchParams.get("hour")) searchParams.set("hour", [0, 24].join("-"));
     setSearchParams(searchParams);
   }, [searchParams]);
 
@@ -115,22 +115,31 @@ const Lessons = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-4">
+    <div className="flex flex-col w-full lg:flex-row gap-6 p-4 text-black">
       {/* Main content area */}
       <div className="flex-1 lg:w-[70%] mb-6 lg:mb-0">
         <CheckpointMap center={center} markers={markers} />
         <div className="border w-full mb-6">{/* <CheckpointMap /> */}</div>
 
         {/* Display lessons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLessons.map((lesson, index) => (
-            <LessonCard key={lesson.id || index} lesson={lesson} />
-          ))}
+
+        <div className="grid grid-cols-1  gap-6">
+          {filteredLessons.length === 0 ? (
+            <p>No Lessons Available... </p>
+          ) : (
+            filteredLessons.map((lesson, index) => (
+              <LessonCard
+                key={lesson._id.toString() + index}
+                lesson={lesson}
+                profile={false}
+              />
+            ))
+          )}
         </div>
       </div>
 
       {/* Sidebar Filter section */}
-      <div className="w-full lg:w-[30%]">
+      <div className="w-full lg:w-[30%] ">
         <Filter />
       </div>
     </div>

@@ -80,7 +80,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userLogged = useSelector((state: RootState) => state.userLogged);
-  console.log(userLogged);
+
   const handleSignOut = () => {
     dispatch(unsetUser());
     navigate("/login");
@@ -89,7 +89,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <h1 className="bubble-font text-center bg-[var(--header-bg)] rounded-xl text-[var(--bg-header)] ">
+        <h1 className="bubble-font text-center text-[var(--bg-header)] bg-[var(--button-bg)] rounded-xl ">
           SKILLZY
         </h1>
       </SidebarHeader>
