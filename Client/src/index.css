@@ -13,15 +13,24 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
 }
 
 @layer base {
   :root {
-    --background: #d7cbbe;
+    --background: #fff9f3;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -62,6 +71,7 @@
     --button-bg: #43ade7;
     --input-text: #090909;
     --bg-header: white;
+    --header-bg: #43ade7;
   }
 
   .dark {
@@ -104,7 +114,8 @@
     --container-bg: #345c3c;
     --button-bg: #fec062;
     --input-text: #090909;
-    --bg-header: "black";
+    --header-bg: #090909;
+    --bg-header: #fec062;
   }
 }
 
