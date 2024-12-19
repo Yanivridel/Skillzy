@@ -3,13 +3,13 @@ import { getReviewsByTeacher, getUserById } from "@/utils/userApi";
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaStar, FaRegStar, FaUserAlt } from 'react-icons/fa'; // הוספנו אייקון של משתמש
 import { useParams } from "react-router-dom";
-import { Review } from "./TeacherReview";
+import TeacherReview, { Review } from "./TeacherReview";
 
 
 export default function TeacherProfile() {
 
     const [teacher, setTeacher] = useState<User | null>(null);
-    const [reviews, setReviews] = useState<Review | null>(null);
+    const [reviews, setReviews] = useState<Review[]>([]);
     const [rating, setRating] = useState<number>(0); // הוספנו סטייט עבור הדירוג
     const { id } = useParams();
 
@@ -106,9 +106,19 @@ export default function TeacherProfile() {
                             <p>Your browser does not support the video tag.</p>
                         </video>
                     </div>
-                    <div>
-                        {}
-                    </div>
+                    {/* Reviews Section */}
+                    <div className="border-t pt-6 gap-6">
+                        <div>
+                            {/* Render the reviews */}
+                            {reviews.length > 0 ? (
+                                reviews.map((review) => (
+                                    <TeacherReview key={review._id} review={review} />
+                                ))
+                            ) : (
+                                <p>No reviews yet.</p>
+                            )}
+                        </div>
+                </div>
                 </div>
             </div>
         </div>
