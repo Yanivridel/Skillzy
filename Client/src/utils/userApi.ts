@@ -1,6 +1,7 @@
 import axios from 'axios';
 // import { getCookie } from './cookies';
-import { IFormDataLogIn, IFormDataSingUp } from '@/types/userTypes';
+import { IFormDataLogIn, IFormDataSingUp, User } from '@/types/userTypes';
+import { getCookie } from './cookies';
 
 const LOCAL_HOST = 'http://localhost:3000';
 const API_URL = LOCAL_HOST;
@@ -53,4 +54,20 @@ export const getUserById = async (userId : string) => {
         throw error;
     }
 };
+
+export const editProfile = async (user : User ) => {
+    try {
+        const { data } = await axios.patch(`${API_URL}/api/users/edit-profile`, user, 
+            {
+                headers: {
+                    Authorization: `Bearer ${getCookie("token")}`
+                }
+            });
+        return data;
+    } 
+    catch (error) {
+        console.error('Add recipe error:', error);
+        throw error;
+    }
+}
 
