@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CiClock2 } from "react-icons/ci";
 import { AiOutlineContacts } from "react-icons/ai";
 import { Lesson } from '@/types/lessonTypes';
@@ -24,9 +25,12 @@ export default function LessonCard({ lesson }: LessonCardProps) {
 
   return (
     <div>
+      {/* כרטיס הלימוד */}
       <div className="cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col sm:flex-row max-w-4xl mx-auto">
-        {/* Teacher Info Section */}
-        <div className="flex flex-col sm:w-2/5 mb-4 sm:mb-0 sm:mr-4">
+        
+        {/* קישור לפרופיל של המורה */}
+        <Link to={`/TeacherProfile/${lesson.teacher._id}`} className="flex flex-col sm:w-2/5 mb-4 sm:mb-0 sm:mr-4">
+          {/* Teacher Info Section */}
           <div className="flex justify-center sm:justify-start items-center mb-2">
             <img 
               src={lesson.teacher.userImage || Anonymous} 
@@ -40,7 +44,7 @@ export default function LessonCard({ lesson }: LessonCardProps) {
             <div className="text-xl font-semibold">{lesson.teacher.fName} {lesson.teacher.lName}</div>
             <p className="text-sm text-slate-400">{lesson.teacher.location}</p>
           </div>
-        </div>
+        </Link>
 
         {/* Lesson Description and Details */}
         <div className="flex flex-col sm:w-3/5">
@@ -94,7 +98,6 @@ export default function LessonCard({ lesson }: LessonCardProps) {
     </div>
   );
 }
-
 
 
 
