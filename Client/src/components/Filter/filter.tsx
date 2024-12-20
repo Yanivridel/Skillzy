@@ -11,12 +11,11 @@ import { Input } from "@/components/ui/input";
 import { useSearchParams } from 'react-router-dom';
 
 export default function Filter() {
-  const [isFilterVisible, setIsFilterVisible] = useState(true); // מצב הפילטר
+  const [isFilterVisible, setIsFilterVisible] = useState(true); 
   const [searchParams, setSearchParams] = useSearchParams();
   const [rating, setRating] = useState<number>(5); 
-  const [price, setPrice] = useState<number>(50);
+  const [price, setPrice] = useState<number>(1000);
 
-  // פונקציה לפתיחה/סגירה של הפילטר
   const toggleFilterVisibility = () => setIsFilterVisible(!isFilterVisible);
 
   const changeParams = (
@@ -50,7 +49,7 @@ export default function Filter() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative text-black">
       {/* כפתור הפילטר עבור מכשירים ניידים */}
       <button
         className="fixed top-4 right-4 p-2 bg-blue-500 text-white rounded-full z-50 text-sm md:hidden"
@@ -65,7 +64,7 @@ export default function Filter() {
       >
         <div>
         <div className='border-b grid justify-center justify-items-center	p-5'>Leaderboard 
-          <Input onChange={(e)=> changeParams(e, "title")}/>
+          <Input value={searchParams.get("title") || ""} onChange={(e)=> changeParams(e, "title")}/>
         </div>
         <div className='grid justify-center justify-items-center border-b p-5'>Choose Subject
           <select value={searchParams.get("subject")?.toLowerCase() || "all"} onChange={(e)=> changeParams(e, "subject") } className='p-4 rounded-[25px]  border'>
@@ -105,8 +104,8 @@ export default function Filter() {
       </div>
       <div className='  p-5 '>
         <p>Times:</p>
-        <div className='border-b'>
-          <div className=' grid grid-cols-3 gap-1'>
+        <div className='border-b pb-5'>
+          <div className=' grid grid-cols-3 gap-1 w-[225px] h-[100%]'>
             <button onClick={(e)=> changeParams(e, "hour")} data-value="9-12" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ... "><CiCloudSun />9-12</button>
             <button onClick={(e)=> changeParams(e, "hour")} data-value="12-15" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiDaySunny />12-15</button>
             <button onClick={(e)=> changeParams(e, "hour")} data-value="15-18" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHorizonAlt />15-18</button>
@@ -114,19 +113,19 @@ export default function Filter() {
             <button onClick={(e)=> changeParams(e, "hour")} data-value="21-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiHail />21-24</button>
             <button onClick={(e)=> changeParams(e, "hour")} data-value="0-3" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltSleet />0-3</button>
             <button onClick={(e)=> changeParams(e, "hour")} data-value="3-6" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><WiNightAltCloudy />3-6</button>
-            <button onClick={(e)=> changeParams(e, "hour")} data-value="0-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ..."><CiCloudSun />all hours</button>
+            <button onClick={(e)=> changeParams(e, "hour")} data-value="0-24" className="grid align-center justify-items-center content-center		 border  rounded p-3 h-[50px] hover:bg-slate-400 ...">all hours</button>
           </div>
         </div>
-        <div className='  p-5 border-b'>
+        <div className=' p-5 border-b'>
         <div className='h-[50px] text-xl'>Price per lesson: <span>{price}</span></div>
         <Slider
         className='h-[50px] w-[200px]'
-        defaultValue={[50]}
+        defaultValue={[1000]}
         max={1000}
         min={50}
         step={50}
         onValueChange={(value) => {
-          setPrice(value[0]); // עדכון המחיר ב-state
+          setPrice(value[0]);
           setSearchParams((prev) => {
             prev.set("price", value[0].toString());
             return prev;
@@ -155,6 +154,7 @@ export default function Filter() {
         <div className='grid justify-items-center p-5 border-b'>By Date:
           <div className=''>
           <select onChange={(e) => changeParams(e, "day")}>
+            <option value="all">All</option>
             <option value="Sunday">Sunday</option>
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
@@ -168,6 +168,7 @@ export default function Filter() {
         <div className='grid justify-items-center p-5 border-b'>By Level:
           <div>
           <select onChange={(e) => changeParams(e, "level")}>
+            <option value="all">All</option>
             <option value="Beginner">Beginner</option>
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>

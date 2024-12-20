@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaEnvelope, FaStar, FaRegStar, FaUserAlt } from 'react-icons/fa'; // הוספנו אייקון של משתמש
 import { useParams } from "react-router-dom";
 import TeacherReview, { Review } from "./TeacherReview";
+import anonym from './../../assets/images/anonymous-user.png'
 
 
 export default function TeacherProfile() {
@@ -34,9 +35,9 @@ export default function TeacherProfile() {
         // ניתן לשלוח את הדירוג למערכת או לשמור אותו כאן
     };
     return (
-        <div className="thin-font bg-[var(--background)] w-full h-screen flex justify-center items-center">
+        <div className="thin-font bg-[var(--background)] w-full h-screen flex justify-center items-center text-black">
             {/* Teacher Profile Card */}
-            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-full max-w-4xl mx-auto space-y-6">
+            <div className="border-[var(--container-bg)] border-4 p-6 rounded-lg shadow-xl w-full max-w-4xl m-auto space-y-6">
                 <div className="text-center">
                     <h2 className="bubble-font text-2xl">Teacher Profile</h2>
                 </div>
@@ -45,7 +46,7 @@ export default function TeacherProfile() {
                     <div className="w-full md:w-1/3">
                         {/* תמונה של המורה או תמונה חלופית */}
                         <img
-                            src={teacher?.userImage || "https://via.placeholder.com/150"} // אם אין תמונה, הצג תמונה ברירת מחדל
+                            src={teacher?.userImage || anonym} // אם אין תמונה, הצג תמונה ברירת מחדל
                             alt="Teacher"
                             className="w-full h-80 object-cover rounded-lg"
                         />
@@ -63,9 +64,7 @@ export default function TeacherProfile() {
                         </div>
                         <div className="bg-white p-4 rounded-lg shadow-md">
                             <p className="text-xl font-semibold">Location: <span className="text-base">{teacher?.location}</span></p>
-                            <button className="w-full bg-gray-200 p-2 rounded-lg mt-4">Privacy</button>
                             <div className="text-xs text-gray-400 mt-4">
-                                <p>120 Million Students</p>
                             </div>
                         </div>
                         {/* Rating Section */}
@@ -92,19 +91,25 @@ export default function TeacherProfile() {
                 </div>
                 {/* Comments Section */}
                 <div className="flex border-t pt-6 gap-6">
-                    <div className="w-[35%] bg-white p-6 rounded-lg shadow-md">
-                        <div className="space-y-2">
-                            <p>{teacher?.location}</p>
-                            <button className="bg-gray-200 p-2 rounded-lg w-full">Privacy</button>
-                            <p className="text-xs text-gray-400">120 Million Students</p>
-                            <p className="text-xs text-gray-400">New York</p>
-                        </div>
-                    </div>
                     <div className="w-[65%] bg-slate-100 p-6 rounded-lg">
-                        <video width="100%" controls>
-                            <source src={teacher?.video} type="video/mp4" />
-                            <p>Your browser does not support the video tag.</p>
-                        </video>
+                    {teacher?.video && teacher.video.includes("youtube") ? (
+                    <div className="aspect-w-16 aspect-h-9">
+                        <iframe
+                        width="100%"
+                        height="100%"
+                        src={teacher.video.replace("watch?v=", "embed/")}
+                        title="YouTube video"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        ></iframe>
+                    </div>
+                    ) : (
+                    <video width="100%" controls>
+                        <source src={teacher?.video} type="video/mp4" />
+                        <p>Your browser does not support the video tag.</p>
+                    </video>
+                    )}
                     </div>
                     {/* Reviews Section */}
                     <div className="border-t pt-6 gap-6">

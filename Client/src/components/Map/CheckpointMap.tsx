@@ -27,13 +27,14 @@ export default function CheckpointMap({center, markers}: MapProps ) {
 }
 
 function useGoogleMap({center, markers} : MapProps) {
+    const googleApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     const mapRef = useRef<HTMLDivElement | null>(null);
     let map: google.maps.Map;
     
 
     useEffect(() => {
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBhpaBPyLEmdlF5gShsgsG_06DmoJJcIsI&callback=initMap`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&callback=initMap`;
         script.async = true;
 
         window.initMap = () => {

@@ -12,7 +12,7 @@ interface LessonCardProps {
 }
 
 export default function LessonCard({ lesson, profile}: LessonCardProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false); // מצב המודאל (פתוח/סגור)
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   lesson.startDate = new Date(lesson.startDate);
 
   // פונקציה לפתיחת המודאל
@@ -27,7 +27,7 @@ export default function LessonCard({ lesson, profile}: LessonCardProps) {
   };
 
   return (
-    <div>
+    <div className='text-black'>
       {/* כרטיס הלימוד */}
       <div className="cursor-pointer bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex flex-col sm:flex-row max-w-4xl mx-auto">
         
@@ -51,6 +51,7 @@ export default function LessonCard({ lesson, profile}: LessonCardProps) {
 
         {/* Lesson Description and Details */}
         <div className="flex flex-col sm:w-3/5">
+          <p className="font-semibold text-lg mb-2">{lesson.title}</p>
           <p className="font-semibold text-lg mb-2">{lesson.description}</p>
           <div className="flex items-center gap-2 text-slate-500 mb-2">
             <CiClock2 className="text-xl" />

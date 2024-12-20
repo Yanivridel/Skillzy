@@ -87,7 +87,7 @@ const Profile = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex justify-center w-full flex-col h-full m-auto">
+    <div className="flex justify-center w-full flex-col h-full m-auto text-black">
       <div className="md:max-w-[600px] mx-auto p-6 m-4 h-full rounded-lg w-[90%] bg-gray-100 shadow-lg">
         <h2 className="text-center text-2xl font-semibold pb-3">Your Profile</h2>
 
@@ -172,10 +172,10 @@ const Profile = () => {
 
         <div className="lessons mb-6 flex flex-col justify-center items-center">
           <h2 className="text-xl font-semibold mb-2">Your Lessons</h2>
-          <ul className="list-disc pl-6">
+          <ul className="list-none pl-6">
             {profile?.schedule?.length > 0 ? (
               profile.schedule.map((lesson, index) => (
-                <li key={index}><LessonCard lesson={lesson} profile={true}/></li>
+                <li className="mb-10" key={index}><LessonCard lesson={lesson} profile={true}/></li>
               ))
             ) : (
               <li>No lessons scheduled</li>
